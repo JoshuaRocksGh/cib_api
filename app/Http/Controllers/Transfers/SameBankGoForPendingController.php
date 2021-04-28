@@ -7,22 +7,23 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class OwnAccountGoForPendingController extends Controller
+class SameBankGoForPendingController extends Controller
 {
-    public function OwnAccountGoForPending(Request $request)
+    public function sameBankGoForPending(Request $request)
     {
 
         // return Auth::user();
         // return $request;
 
+/*
 
-        /*
         return [
             'responseCode' => '44',
             'message' => "testing reeusting",
             'data' => [
                 "account_no" => $request->account_no,
                 "destinationAccountId" => $request->destinationAccountId,
+                "currency" => $request->currency,
                 "amount" => $request->amount,
                 "narration" => $request->narration,
                 "postBy" => $request->postBy,
@@ -33,11 +34,13 @@ class OwnAccountGoForPendingController extends Controller
             ],
 
         ];
-*/
+
+        */
+
         $account_no = $request->account_no;
         $destinationAccountId = $request->destinationAccountId;
-        $amount = $request->amount;
         $currency = $request->currency;
+        $amount = $request->amount;
         $narration = $request->narration;
         $postBy = $request->postBy;
         $appBy = '';
@@ -60,15 +63,15 @@ class OwnAccountGoForPendingController extends Controller
 
         $query_result = DB::table('tb_corp_bank_req')->insert(
             [
-                'request_type' => 'OWN',
+                'request_type' => 'SAB',
                 'request_status' => 'P',
                 'user_id' => $customer_no,
                 'user_name' => $user_alias,
                 'customer_no' => $customer_no,
                 'debit_tel' => $customerTel,
                 'account_no' => $account_no,
-                'amount' => $amount,
                 'currency' => $currency,
+                'amount' => $amount,
                 'account_mandate' => null,
                 'CREDITACCOUNTNUMBER' => $destinationAccountId,
                 'narration' => $narration,
@@ -79,7 +82,6 @@ class OwnAccountGoForPendingController extends Controller
                 'documentRef' => $documentRef
             ]
         );
-
 
         $amount = number_format($amount, 2);
 
