@@ -231,7 +231,8 @@ class ExcelUploadImport implements WithHeadingRow, ToCollection
                     'created_at' => NOW(),
                     'updated_at' => NOW()
                 ]);
-/*
+
+                /*
                 $query_result = DB::table('tb_corp_bank_req')->insert(
                     [
                         'request_type' => 'BULK',

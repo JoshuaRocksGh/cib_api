@@ -43,6 +43,7 @@ class OwnAccountGoForPendingController extends Controller
         $appBy = '';
         $customerTel = $request->telno;
         $transBy = $request->postBy;
+        $user_id = $request->user_id;
         $customer_no = $request->customer_no;
         $user_alias = $request->user_alias;
         $documentRef = strtoupper(substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 2) . time());
@@ -57,19 +58,21 @@ class OwnAccountGoForPendingController extends Controller
 
         // return $data;
 
+        $query_acc_mandate = DB::table('vw_ibank_mandate')->where('acct_link', $account_no)->value('mandate');
+
 
         $query_result = DB::table('tb_corp_bank_req')->insert(
             [
                 'request_type' => 'OWN',
                 'request_status' => 'P',
-                'user_id' => $customer_no,
+                'user_id' => $user_id,
                 'user_name' => $user_alias,
                 'customer_no' => $customer_no,
                 'debit_tel' => $customerTel,
                 'account_no' => $account_no,
                 'amount' => $amount,
                 'currency' => $currency,
-                'account_mandate' => null,
+                'account_mandate' => $query_acc_mandate,
                 'CREDITACCOUNTNUMBER' => $destinationAccountId,
                 'narration' => $narration,
                 'postedby' => $postBy,
