@@ -35,6 +35,8 @@ class ImportExcelController extends Controller
             return response()->json($validator->errors(), 200);
         }
 
+        // return $request;
+
         $documentRef = time();
         $account_no = $request->account_no;
         $bank_code = $request->bank_type;
