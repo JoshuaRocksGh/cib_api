@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Accounts\AccountController;
+use App\Http\Controllers\BULK\BulkKorporController;
 use App\Http\Controllers\BULK\BulkTransferController;
 use App\Http\Controllers\BULK\ImportExcelController;
 use App\Http\Controllers\PendingRequestController;
@@ -28,6 +29,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/import', [ImportExcelController::class, 'import'])->name('import');
+Route::post('/bulk-korpor-upload', [BulkKorporController::class, 'bulk_korpor_upload'])->name('bulk-korpor-upload');
 
 Route::post('/own-account-gone-for-pending', [wn::class, 'OwnAccountGoForPending'])->name('own-account-gone-for-pending');
 Route::post('/same-bank-gone-for-pending', [SameBankGoForPendingController::class, 'sameBankGoForPending'])->name('same-bank-gone-for-pending');
