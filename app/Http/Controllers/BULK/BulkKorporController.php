@@ -105,21 +105,38 @@ class BulkKorporController extends Controller
 
     public function update_bulk_korpor_upload_detail_list(Request $request)
     {
-        $customerNumber = $request->query("customer_no");
-        $status = $request->query("status");
-        $batch_no = $request->query('batch_no');
+        $id = $request->id;
+        $customer_no = $request->customer_no;
+        $name = $request->name;
+        $phone = $request->phone;
+        $amount = $request->amount;
 
-        $files = DB::table('bankowner.paymentdb_cib_cobby')
-            ->where('customer_no', $customerNumber)
-            ->where('status', $status)
-            ->where('batch_no', $batch_no)
-            ->get();
 
-        return response()->json([
-            'responseCode' => '000',
-            'message' => "Available Uploads for Batch NO: #" . $batch_no,
-            'data' => $files
-        ], 200);
+        $update_query = DB::table('bankowner.paymentdb_cib_cobby')
+            ->where('customer_no', $customer_no)
+            ->where('id', $id)
+            ->update([
+                'name' => $name,
+                'phone' => $phone,
+                'amount' => $amount
+            ]);
+
+            if($update_query){
+                return response()->json([
+                    'responseCode' => '000',
+                    'message' => "Update successful # " ,
+                    'data' => null
+                ], 200);
+            }else{
+                return response()->json([
+                    'responseCode' => '550',
+                    'message' => "Failed to update # " ,
+                    'data' => null
+                ], 200);
+            }
+
+
+
     }
 
 }
