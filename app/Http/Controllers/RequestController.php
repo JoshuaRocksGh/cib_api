@@ -25,4 +25,21 @@ class RequestController extends Controller
 
     }
 
+    public function get_detail_pending_request(Request $request) {
+
+        $customer_no = $request->query('customer_no');
+        $request_id = $request->query('request_id');
+
+
+        $db_query = DB::table('tb_corp_bank_req')->where('request_id', $request_id )->where('customer_no', $customer_no)->first();
+
+        return response()->json([
+            'responseCode' => '000',
+            'message' => "Transfer ( From: $customer_no  To: $request_id) pending for approval",
+            "data" => $db_query
+        ], 200);
+
+
+    }
+
 }

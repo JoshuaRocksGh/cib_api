@@ -41,4 +41,6 @@ Route::get('/get-bulk-upload-list', [BulkTransferController::class, 'get_bulk_up
 Route::get('/get-bulk-upload-detail-list-api', [BulkTransferController::class, 'get_bulk_upload_detail_list_api'])->name('get-bulk-upload-detail-list-api');
 Route::get('/pending-request-api' , [RequestController::class, 'all_approval_request'])->name('pending-request-api');
 
+Route::get('/get-detail-pending-request-api' , [RequestController::class, 'get_detail_pending_request'])->name('get-detail-pending-request-api');
+
 Route::post('/account/getAccounts', [AccountController::class, 'get_accounts'])->name('getAccounts');
