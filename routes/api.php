@@ -33,6 +33,7 @@ Route::post('/import', [ImportExcelController::class, 'import'])->name('import')
 Route::post('/bulk-korpor-upload', [BulkKorporController::class, 'bulk_korpor_upload'])->name('bulk-korpor-upload');
 Route::get('/get-bulk-korpor-upload-list-api', [BulkKorporController::class, 'get_bulk_korpor_upload_list'])->name('get-bulk-korpor-upload-list');
 Route::get('/get-bulk-korpor-upload-detail-list-api', [BulkKorporController::class, 'get_bulk_korpor_upload_detail_list'])->name('get-bulk-korpor-upload-detail-list-api');
+Route::get('/update-bulk-korpor-upload-detail-list-api', [BulkKorporController::class, 'update_bulk_korpor_upload_detail_list'])->name('update-bulk-korpor-upload-detail-list-api');
 
 Route::post('/own-account-gone-for-pending', [wn::class, 'OwnAccountGoForPending'])->name('own-account-gone-for-pending');
 Route::post('/same-bank-gone-for-pending', [SameBankGoForPendingController::class, 'sameBankGoForPending'])->name('same-bank-gone-for-pending');

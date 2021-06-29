@@ -69,7 +69,7 @@ class BulkKorporController extends Controller
         $status = $request->query("status");
         // return $customer_no;
 
-        $files = DB::table('paymentdb_cib_cobby')
+        $files = DB::table('bankowner.paymentdb_cib_cobby')
             ->where('customer_no', $customerNumber)
             ->where('status', $status)
             ->orderBy('batch_no', 'desc')
@@ -90,7 +90,26 @@ class BulkKorporController extends Controller
         $status = $request->query("status");
         $batch_no = $request->query('batch_no');
 
-        $files = DB::table('paymentdb_cib_cobby')
+        $files = DB::table('bankowner.paymentdb_cib_cobby')
+            ->where('customer_no', $customerNumber)
+            ->where('status', $status)
+            ->where('batch_no', $batch_no)
+            ->get();
+
+        return response()->json([
+            'responseCode' => '000',
+            'message' => "Available Uploads for Batch NO: #" . $batch_no,
+            'data' => $files
+        ], 200);
+    }
+
+    public function update_bulk_korpor_upload_detail_list(Request $request)
+    {
+        $customerNumber = $request->query("customer_no");
+        $status = $request->query("status");
+        $batch_no = $request->query('batch_no');
+
+        $files = DB::table('bankowner.paymentdb_cib_cobby')
             ->where('customer_no', $customerNumber)
             ->where('status', $status)
             ->where('batch_no', $batch_no)
