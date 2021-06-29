@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Imports\KorporUploadImport;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -13,7 +14,6 @@ class BulkKorporController extends Controller
 {
     public function bulk_korpor_upload(Request $request)
     {
-
 
         $validator = Validator::make($request->all(), [
             'select_file' => 'required|mimes:xls,xlsx',
@@ -60,4 +60,47 @@ class BulkKorporController extends Controller
         }
 
     }
+
+    public function get_bulk_korpor_upload_list(Request $request)
+    {
+
+        // return $request;
+        $customerNumber = $request->query("customer_no");
+        $status = $request->query("status");
+        // return $customer_no;
+
+        $files = DB::table('paymentdb_cib_cobby')
+            ->where('customer_no', $customerNumber)
+            ->where('status', $status)
+            ->orderBy('batch_no', 'desc')
+            ->distinct()
+            // ->get();status
+            ->get(['batch_no', 'account_no', 'status', 'user_id', 'customer_no']);
+
+        return response()->json([
+            'responseCode' => '000',
+            'message' => "Available Uploads",
+            'data' => $files
+        ], 200);
+    }
+
+    public function get_bulk_korpor_upload_detail_list(Request $request)
+    {
+        $customerNumber = $request->query("customer_no");
+        $status = $request->query("status");
+        $batch_no = $request->query('batch_no');
+
+        $files = DB::table('paymentdb_cib_cobby')
+            ->where('customer_no', $customerNumber)
+            ->where('status', $status)
+            ->where('batch_no', $batch_no)
+            ->get();
+
+        return response()->json([
+            'responseCode' => '000',
+            'message' => "Available Uploads for Batch NO: #" . $batch_no,
+            'data' => $files
+        ], 200);
+    }
+
 }

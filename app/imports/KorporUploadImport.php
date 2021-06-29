@@ -50,6 +50,7 @@ class KorporUploadImport implements WithHeadingRow, ToCollection
                     'user_id' => $user_id,
                     'batch_no' => $batch_no,
                     'reference_no' => (String) time(),
+                    'status' => 'P',
                 ]);
             }
         }
