@@ -24,7 +24,7 @@ class BulkKorporController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'responseCode' => '000',
+                'responseCode' => '500',
                 'message' => 'Error validation error',
                 'error' => $validator->errors(),
                 'data' => null
