@@ -46,6 +46,29 @@ class RequestApprovalController extends Controller
                         ->where('request_id', $request_id)
                         ->first();
 
+        if (is_null($request_query)) {
+            return response()->json([
+                'responseCode' => '422',
+                'message' => "Customer ($customer_no) with request doest not exits",
+                'data' => null
+            ], 200);
+        }
+
+        if (trim($request_query->request_status) == "A") {
+            return response()->json([
+                'responseCode' => '422',
+                'message' => "Request has already been Approved",
+                'data' => null
+            ], 200);
+        }
+
+        if (trim($request_query->request_status) == "R") {
+            return response()->json([
+                'responseCode' => '422',
+                'message' => "Request has already been Rejected",
+                'data' => null
+            ], 200);
+        }
         // return response()->json([
         //     'data' => $request_query
         // ]);
