@@ -33,6 +33,8 @@ class RequestApprovalController extends Controller
             ], 200);
         }
 
+        // return $request;
+
         $request_id = $request->request_id;
         $user_mandate = $request->user_mandate;
         $user_id = $request->user_id;
@@ -171,7 +173,8 @@ class RequestApprovalController extends Controller
             return response()->json([
                 'responseCode' =>  '422',
                 'status' => 'NOT_ALLOWED',
-                'message' =>  "User ($user_id) has already approve this request"
+                'message' =>  "User ($user_id) has already approve this request",
+                'data' => NULL
             ], 200);
         }
 
@@ -194,7 +197,7 @@ class RequestApprovalController extends Controller
 
 
 
-        //return $result;
+        // return $request_type_check;
 
         //  return response()->json([
         //     'data' => $result

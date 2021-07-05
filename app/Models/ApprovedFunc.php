@@ -61,7 +61,8 @@ class ApprovedFunc extends Model
         if (empty($find_user)) {
             return [
                 'responseCode' => '400',
-                'message' => 'User does not has the right'
+                'message' => 'User does not has the right',
+                'data' => NULL
             ];
         }
 
@@ -91,7 +92,8 @@ class ApprovedFunc extends Model
                         return [
                             'responseCode' => '000',
                             'check_mandate' => $imp_chm,
-                            'message' => 'Do the check api calls but check the request type check string -> 1'
+                            'message' => 'Do the check api calls but check the request type check string -> 1',
+                            'data' => NULL
                         ];
 
                         // return $this->check_request($request_type_check, $request_id, $imp_chm, $comment, $comment_by,  $account_no, $start_date, $end_date, $type, $user_alias, $leaflet, $branch, $start_cheque, $end_cheque, $date_issued, $beneficiary_name, $amount);
@@ -115,7 +117,8 @@ class ApprovedFunc extends Model
                                 return [
                                     'responseCode' => '000',
                                     'check_mandate' => $imp_chm,
-                                    'message' => 'Do the check api calls but check the request type check string'
+                                    'message' => 'Do the check api calls but check the request type check string',
+                                    'data' => NULL
                                 ];
 
                                 // return $this->check_request($request_type_check, $request_id, $imp_chm, );
@@ -136,7 +139,8 @@ class ApprovedFunc extends Model
                                 return [
                                     'responseCode' => '000',
                                     'check_mandate' => $imp_chm,
-                                    'message' => 'Do the check api calls but check the request type check string -> 2'
+                                    'message' => 'Do the check api calls but check the request type check string -> 2',
+                                    'data' => NULL
                                 ];
 
                                 // return $this->check_request($request_type_check, $request_id, $imp_chm, $comment, $comment_by,  $account_no, $start_date, $end_date, $type, $user_alias, $leaflet, $branch, $start_cheque, $end_cheque, $date_issued, $beneficiary_name, $amount);
@@ -152,14 +156,16 @@ class ApprovedFunc extends Model
                         if ((intval($chm[$index][0]) == intval($_acm[$index][0]))  and  isset($chm[$index]) and  $chm[$index] == 'OR') {
                             return [
                                 'responseCode' => '400',
-                                'message' => 'Please error occured'
+                                'message' => 'Please error occured',
+                                'data' => NULL
                             ];
                         }
 
                         if (intval($chm[$index][0]) > intval($_acm[$index][0])) {
                             return [
                                 'responseCode' => '400',
-                                'message' => 'PANEL [' . $up . '] HAS REACHED ITS LIMITS '
+                                'message' => 'PANEL [' . $up . '] HAS REACHED ITS LIMITS ',
+                                'data' => NULL
                             ];
                         }
                     }
@@ -190,7 +196,8 @@ class ApprovedFunc extends Model
 
                             return [
                                 'responseCode' => '400',
-                                'message' => 'PANEL [' . $up . '] HAS REACHED ITS LIMITS '
+                                'message' => 'PANEL [' . $up . '] HAS REACHED ITS LIMITS ',
+                                'data' => NULL
                             ];
                         }
                     }
@@ -212,7 +219,8 @@ class ApprovedFunc extends Model
                     return [
                         'responseCode' => '000',
                         'check_mandate' => $imp_chm,
-                        'message' => 'Do the check api calls but check the request type check string -> 3'
+                        'message' => 'Do the check api calls but check the request type check string -> 3',
+                        'data' => NULL
                     ];
 
                     // return $this->check_request($request_type_check, $request_id, $imp_chm, $comment, $comment_by,  $account_no, $start_date, $end_date, $type, $user_alias, $leaflet, $branch, $start_cheque, $_cheque, $date_issued, $beneficiary_name, $amount);
@@ -234,7 +242,8 @@ class ApprovedFunc extends Model
             return [
                 'responseCode' => '000',
                 'check_mandate' => $_check_mandate,
-                'message' => 'Do the check api calls but check the request type check string -> 4'
+                'message' => 'Do the check api calls but check the request type check string -> 4',
+                'data' => NULL
             ];
 
             // check_request($request_type_check, $request_id, $imp_chm, $comment, $comment_by,  $account_no, $start_date, $end_date, $type, $user_alias, $leaflet, $branch, $start_cheque, $end_cheque, $issue_date, $beneficiary_name, $amount);
@@ -249,7 +258,8 @@ class ApprovedFunc extends Model
                 return [
                     'responseCode' => '200',
                     'status' => 'waiting',
-                    'message' => 'Waiting for others to approve'
+                    'message' => 'Waiting for others to approve',
+                    'data' => NULL
                 ];
             }
         }
