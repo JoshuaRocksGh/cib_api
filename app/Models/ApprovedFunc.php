@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 class ApprovedFunc extends Model
 {
-    
-    public function approved_req($request_type_check, $request_id, $up, $acm, $chm, $comment, $comment_by)
+
+    public function approved_req($request_type_check, $request_id, $up, $acm, $chm, $comment, $comment_by, $user_id, $approvers)
     {
 
 
@@ -23,6 +23,18 @@ class ApprovedFunc extends Model
         //     'comment' => $comment,
         //     'comment_by' => $comment_by
         // ];
+
+
+
+        if(is_null($approvers)){
+            $approvers = $user_id;
+        }else{
+            $approvers = $approvers . ',' . $user_id;
+        }
+
+
+
+
 
         // // THIS HAS DATA IN IT LIKE
         // // $chm = "2A AND 0B";
@@ -160,7 +172,7 @@ class ApprovedFunc extends Model
             $imp_acm = implode(" ", $_acm);
             $imp_chm = implode(" ", $chm);
 
-            return $this->compare($request_id, $imp_acm, $imp_chm, $comment, $comment_by);
+            return $this->compare($request_id, $imp_acm, $imp_chm, $comment, $comment_by, $approvers);
         } else {
 
             for ($index = 0; $index < count($chm); $index++) {
@@ -208,13 +220,13 @@ class ApprovedFunc extends Model
                 }
             }
 
-            return $this->compare($request_id, $imp_acm, $imp_chm, $comment, $comment_by);
+            return $this->compare($request_id, $imp_acm, $imp_chm, $comment, $comment_by, $approvers);
         }
     }
 
 
 
-    public function compare($request_id, $_account_mandater, $_check_mandate, $comment, $comment_by)
+    public function compare($request_id, $_account_mandater, $_check_mandate, $comment, $comment_by, $approvers)
     {
         if ($_account_mandater == $_check_mandate) {
 
@@ -231,7 +243,7 @@ class ApprovedFunc extends Model
 
 
         } else {
-            $waiting = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $_check_mandate, 'waitinglist' => 'waiting', 'comment_1' => $comment, 'comment_1_by' => $comment_by]);
+            $waiting = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $_check_mandate, 'waitinglist' => 'waiting', 'comment_1' => $comment, 'comment_1_by' => $comment_by, 'approvers' => $approvers]);
 
             if ($waiting == true) {
                 return [

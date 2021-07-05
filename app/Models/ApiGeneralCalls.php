@@ -14,7 +14,7 @@ class ApiGeneralCalls extends Model
 {
 
 
-    public function call_own_account_transfer($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $accountId, $destinationAccountId, $amount, $documentRef, $narration, $postBy, $appBy, $customerTel, $transBy, $deviceIp, $currency, $authToken)
+    public function call_own_account_transfer($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $accountId, $destinationAccountId, $amount, $documentRef, $narration, $postBy, $appBy, $customerTel, $transBy, $deviceIp, $currency, $authToken, $approvers)
     {
 
         // return response()->json([
@@ -30,6 +30,14 @@ class ApiGeneralCalls extends Model
         //             'transBy' => $transBy
         //         ]
         // ]);
+
+
+        if(is_null($approvers)){
+            $approvers = $postBy;
+        }else{
+            $approvers = $approvers . ',' . $postBy;
+        }
+
 
         $documentRef = substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 2) . time();
 
@@ -68,14 +76,14 @@ class ApiGeneralCalls extends Model
         $result_i = new ApiBaseResponse();
         $result = (object) $result_i->api_response($response);
 
-         
+
 
             $res_date = Carbon::now();
             $res_date = $res_date->toDateTimeString();
 
             if ($result->responseCode == '000' || $result->responseCode == '200') {
 
-                $approve_req = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $check_mandate, 'request_status' => 'A', 'waitinglist' => 'approved', 'comment_1' => $comment, 'DOCUMENTREF' => $documentRef, 'comment_1_by' => $comment_by, 'res_message' => $result->message, 'res_date' => $res_date]);
+                $approve_req = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $check_mandate, 'request_status' => 'A', 'waitinglist' => 'approved', 'comment_1' => $comment, 'DOCUMENTREF' => $documentRef, 'comment_1_by' => $comment_by, 'res_message' => $result->message, 'res_date' => $res_date, 'approvers' => $approvers]);
 
                 $request = $user_alias . ' => ' . 'After approval received this response: => ' . $result->message;
 
@@ -98,71 +106,76 @@ class ApiGeneralCalls extends Model
     }
 
 
-
-
-
-    public function call_third_party_transfer($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $accountId, $destinationAccountId, $amount, $documentRef, $narration, $postBy, $appBy, $customerTel, $transBy)
+    public function call_same_bank_transfer($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $accountId, $destinationAccountId, $amount, $documentRef, $narration, $postBy, $appBy, $customerTel, $transBy, $deviceIp, $currency, $authToken, $approvers)
     {
 
+        // return response()->json([
+        //     'data' => [
+        //             'accountId' => $accountId,
+        //             'destinationAccountId' => $destinationAccountId,
+        //             'amount' => $amount,
+        //             'documentRef' => $documentRef,
+        //             'narration' => $narration,
+        //             'postBy' => $postBy,
+        //             'appBy' => $appBy,
+        //             'customerTel' => $customerTel,
+        //             'transBy' => $transBy
+        //         ]
+        // ]);
+
+        if(is_null($approvers)){
+            $approvers = $postBy;
+        }else{
+            $approvers = $approvers . ',' . $postBy;
+        }
+
         $documentRef = substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 2) . time();
-        // return [
-        //     $accountId,
-        //     $destinationAccountId,
-        //     $amount,
-        //     $documentRef,
-        //     $narration,
-        //     $postBy,
-        //     $appBy,
-        //     $customerTel,
-        //     $transBy
-        // ];
 
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => env('API_URL') .  "/account/$accountId/transfer",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "PUT",
-            CURLOPT_POSTFIELDS => "accountId=$accountId&destinationAccountId=$destinationAccountId&amount=$amount&documentRef=$documentRef&narration=$narration&postBy=$postBy&appBy=$appBy&customerTel=$customerTel&transBy=$transBy",
-            CURLOPT_HTTPHEADER => array(
-                "Content-Type: application/x-www-form-urlencoded",
-                "x-api-key: " . env('X_API_KEY'),
-                "x-api-secret: " . env('X_API_SECRET')
-            ),
-        ));
-
-        $response = curl_exec($curl);
-
-        $err = curl_error($curl);
-
-        curl_close($curl);
+        $user_alias = $postBy;
 
 
-        if ($err) {
-            return json_encode([
-                'message' => "cURL Error #:" . $err,
-                'responseCode' => '404',
-            ]);
-        } else {
+        $data = [
 
-            // $response = json_decode($response);
-            // return $response;
+            "amount" => $amount,
+            "authToken" => $authToken,
+            "channel" => 'NET',
+            "creditAccount" => $destinationAccountId,
+            "currency" => $currency,
+            "debitAccount" => $accountId,
+            "deviceIp" => $deviceIp,
+            "entrySource" => 'C',
+            "narration" => $narration,
+            "secPin" => '1234',
+            "userName" => $postBy,
+           // "category" => null,
 
-            $result = json_decode($response);
+        ];
+
+        $headers = [
+            "x-api-key"=> "123",
+            "x-api-secret"=> "123",
+            "x-api-source"=> "123",
+            "x-api-token"=> "123"
+        ];
+
+        // return response()->json($data, 200);
+
+        $response = Http::post(env('API_BASE_URL') . "/transfers/sameBank", $data);
+
+
+        $result_i = new ApiBaseResponse();
+        $result = (object) $result_i->api_response($response);
+
+
 
             $res_date = Carbon::now();
             $res_date = $res_date->toDateTimeString();
 
             if ($result->responseCode == '000' || $result->responseCode == '200') {
 
-                $approve_req = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $check_mandate, 'request_status' => 'A', 'waitinglist' => 'approved', 'comment_1' => $comment, 'DOCUMENTREF' => $documentRef, 'comment_1_by' => $comment_by, 'res_message' => $result->message, 'res_date' => $res_date]);
+                $approve_req = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $check_mandate, 'request_status' => 'A', 'waitinglist' => 'approved', 'comment_1' => $comment, 'DOCUMENTREF' => $documentRef, 'comment_1_by' => $comment_by, 'res_message' => $result->message, 'res_date' => $res_date, 'approvers' => $approvers]);
 
-                $request =  Auth::user()->user_alias . ' => ' . 'After approval received this response: => ' . $result->message;
+                $request = $user_alias . ' => ' . 'After approval received this response: => ' . $result->message;
 
                 $this->request_logs($request, $request_type_check, $result->message, $postBy);
 
@@ -179,8 +192,9 @@ class ApiGeneralCalls extends Model
                     'message' =>  $result->message
                 ];
             }
-        }
+
     }
+
 
 
 

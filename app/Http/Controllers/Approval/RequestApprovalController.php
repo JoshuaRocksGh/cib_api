@@ -137,6 +137,7 @@ class RequestApprovalController extends Controller
         $appBy = null;
 
         $user_id = $user_id;
+        $approvers = $request_query->approvers;
 
         // BULK
         $channelCode  = 'NET';
@@ -165,6 +166,17 @@ class RequestApprovalController extends Controller
         // ];
 
 
+
+        if(strpos(strtoupper(trim($approvers)), strtoupper(trim($user_id))) !== false){
+            return response()->json([
+                'responseCode' =>  '422',
+                'status' => 'NOT_ALLOWED',
+                'message' =>  "User ($user_id) has already approve this request"
+            ], 200);
+        }
+
+
+
         if (empty($comment_by_old)) {
             $comment = $comment_by . '=> ' . $comment_1;
             $comment = $comment_by;
@@ -178,7 +190,7 @@ class RequestApprovalController extends Controller
 
 
 
-        $result = $approve_func->approved_req($request_type_check, $request_id, $user_panel, $account_mandate, $check_mandate, $comment, $comment_by);
+        $result = $approve_func->approved_req($request_type_check, $request_id, $user_panel, $account_mandate, $check_mandate, $comment, $comment_by,$user_id, $approvers);
 
 
 
@@ -202,7 +214,7 @@ class RequestApprovalController extends Controller
                 case "TPT":
                     // return 'TPT';
 
-                    $req_result = $api_request->call_third_party_transfer($request_id, $request_type_check, $result['check_mandate'], $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $amount, $documentRef, $narration, $postBy, $appBy, $customerTel, $transBy);
+                    $req_result = $api_request->call_same_bank_transfer($request_id, $request_type_check, $result['check_mandate'], $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $amount, $documentRef, $narration, $postBy, $appBy, $customerTel, $transBy, $deviceIp, $currency, $authToken, $approvers);
                     // $req_result = $api_request->statement_req($request_id, $request_type_check, $result['check_mandate'], $comment, $comment_by, $account_no, $start_date, $end_date, $type, $user_alias);
                     return $req_result;
                     break;
@@ -213,7 +225,7 @@ class RequestApprovalController extends Controller
 
                     $check_mandate_i = $result['check_mandate'];
 
-                    $req_result = $api_request->call_own_account_transfer($request_id, $request_type_check, $result['check_mandate'], $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $amount, $documentRef, $narration, $postBy, $appBy, $customerTel, $transBy, $deviceIp, $currency, $authToken);
+                    $req_result = $api_request->call_own_account_transfer($request_id, $request_type_check, $result['check_mandate'], $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $amount, $documentRef, $narration, $postBy, $appBy, $customerTel, $transBy, $deviceIp, $currency, $authToken, $approvers);
 
 
                     // $req_result = $api_request->statement_req($request_id, $request_type_check, $result['check_mandate'], $comment, $comment_by, $account_no, $start_date, $end_date, $type, $user_alias);
