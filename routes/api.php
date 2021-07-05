@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Accounts\AccountController;
+use App\Http\Controllers\Approval\RequestApprovalController;
 use App\Http\Controllers\BULK\BulkKorporController;
 use App\Http\Controllers\BULK\BulkTransferController;
 use App\Http\Controllers\BULK\ImportExcelController;
@@ -48,3 +49,6 @@ Route::post('/approved-request-api', [ApprovedRequestController::class, 'approve
 Route::get('/get-detail-pending-request-api' , [RequestController::class, 'get_detail_pending_request'])->name('get-detail-pending-request-api');
 
 Route::post('/account/getAccounts', [AccountController::class, 'get_accounts'])->name('getAccounts');
+
+#CIB APPROVAL
+Route::post('/request-approval', [RequestApprovalController::class, 'request_approval'])->name('request-approval');

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class SameBankGoForPendingController extends Controller
 {
@@ -37,9 +38,30 @@ class SameBankGoForPendingController extends Controller
 
         */
 
+       $validator = Validator::make($request->all(), [
+        'user_mandate' => 'required',
+        'account_mandate' => 'required',
+        'postBy' => 'required',
+        'destinationAccountId' => 'required',
+        'account_no' => 'required',
+        'customer_no' => 'required',
+        'user_alias' => 'required',
+        'currency' => 'required',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'responseCode' => '422',
+            'message' => 'Error validation error',
+            'error' => $validator->errors(),
+            'data' => null
+        ], 200);
+    }
+
         $account_no = $request->account_no;
         $destinationAccountId = $request->destinationAccountId;
         $currency = $request->currency;
+        $account_mandate = $request->account_mandate;
         $amount = $request->amount;
         $narration = $request->narration;
         $postBy = $request->postBy;
@@ -72,7 +94,7 @@ class SameBankGoForPendingController extends Controller
                 'account_no' => $account_no,
                 'currency' => $currency,
                 'amount' => $amount,
-                'account_mandate' => null,
+                'account_mandate' => $account_mandate,
                 'CREDITACCOUNTNUMBER' => $destinationAccountId,
                 'narration' => $narration,
                 'postedby' => $postBy,
