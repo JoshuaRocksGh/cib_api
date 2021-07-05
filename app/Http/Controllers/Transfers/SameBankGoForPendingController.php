@@ -94,7 +94,7 @@ class SameBankGoForPendingController extends Controller
         } else {
             return response()->json([
                 'responseCode' => '888',
-                'message' => 'Transfer between own accounts failed',
+                'message' => "Transfer (From: $account_no ~ To: $destinationAccountId ) failed",
                 "data" => null
             ], 200);
         }
