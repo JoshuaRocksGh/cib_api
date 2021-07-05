@@ -22,19 +22,19 @@ class ApiBaseResponse extends Model
 
             if ($result->responseCode == '000') {
 
-                return response()->json([
+                return[
                     'responseCode' => $result->responseCode,
                     'message' => $result->message,
                     'data' => $result->data
-                ], 200);
+                ];
 
             } else {   // API responseCode is not 000
 
-                return response()->json([
+                return [
                     'responseCode' => $result->responseCode,
                     'message' => $result->message,
                     'data' => $result->data
-                ], 200);
+                ];
 
             }
         } else { // API response status code not 200
