@@ -40,7 +40,7 @@ class RequestApprovalController extends Controller
         $user_id = $request->user_id;
         $user_alias = $request->user_alias;
         $customer_no = $request->customer_no;
-        $deviceIp = $request->customer_no;
+        $deviceIp = $request->deviceIp;
         $authToken = $request->authToken;
 
         $request_query = DB::table('tb_corp_bank_req')
@@ -237,7 +237,7 @@ class RequestApprovalController extends Controller
 
                     // OTHER BANK TRANSFER
                 case "ACH":
-                    // return 'OTBT';
+                    // return 'ACH';
 
                     $req_result = $api_request->call_ach_transfer($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $bankCode, $amount, $narration, $documentRef, $postedBy, $approvedBy, $beneficiaryName, $beneficiaryAddress, $ex1, $ex2, $ex3, $deviceIp, $currency, $authToken, $approvers);
 

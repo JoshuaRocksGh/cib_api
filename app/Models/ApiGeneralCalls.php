@@ -291,7 +291,7 @@ class ApiGeneralCalls extends Model
             "debitAccount"=> $debitAccountNumber,
             "deviceIp"=> $deviceIp,
             "entrySource"=> "C",
-            "secPin"=> "string",
+            "secPin"=> null,
             "transactionDetails"=> $narration,
             "transferCurrency"=> $currency
         ];
@@ -305,7 +305,7 @@ class ApiGeneralCalls extends Model
             "x-api-token"=> "123"
         ];
 
-        return response()->json($data, 200);
+        // return response()->json($data, 200);
 
         $response = Http::post(env('API_BASE_URL') . "/transfers/achBankTransfer", $data);
 

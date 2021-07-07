@@ -21,6 +21,8 @@ class AchGoForPendingController extends Controller
             'user_alias' => 'required',
             'account_no' => 'required',
             'currency' => 'required',
+            'bank_code' => 'required',
+            'bank_name' => 'required',
             'bene_account' => 'required',
             'bene_name' => 'required',
             'bene_address' => 'required',
@@ -47,6 +49,7 @@ class AchGoForPendingController extends Controller
         $debitAccountNumber = $request->account_no;
         $creditAccountNumber = $request->bene_account;
         $bankCode = substr($request->bene_account, 0, 3);
+        $bankName =  strtoupper($request->bene_name);
         $beneficiaryName = $request->bene_name;
         $amount = $request->amount;
         $currency = $request->currency;
@@ -69,6 +72,7 @@ class AchGoForPendingController extends Controller
                 'account_no'  => $debitAccountNumber,
                 'creditAccountNumber' => $creditAccountNumber,
                 'bankCode' => $bankCode,
+                'bank_name' => $bankName,
                 'beneficiaryName' => $beneficiaryName,
                 'user_id' => $user_id,
                 'amount' => $amount,
