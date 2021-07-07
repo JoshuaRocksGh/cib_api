@@ -16,24 +16,26 @@ class OwnAccountGoForPendingController extends Controller
         // return $request;
 
 
-        /*
-        return [
-            'responseCode' => '44',
-            'message' => "testing reeusting",
-            'data' => [
-                "account_no" => $request->account_no,
-                "destinationAccountId" => $request->destinationAccountId,
-                "amount" => $request->amount,
-                "narration" => $request->narration,
-                "postBy" => $request->postBy,
-                "customerTel" => $request->customerTel,
-                "transBy" => $request->transBy,
-                "customer_no" => $request->customer_no,
-                "user_alias" => $request->user_alias
-            ],
 
-        ];
-*/
+        // return [
+        //     'responseCode' => '44',
+        //     'message' => "testing resulting",
+        //     'data' => [
+        //         "account_no" => $request->account_no,
+        //         "destinationAccountId" => $request->destinationAccountId,
+        //         "amount" => $request->amount,
+        //         "narration" => $request->narration,
+        //         "postBy" => $request->postBy,
+        //         "customerTel" => $request->customerTel,
+        //         "transBy" => $request->transBy,
+        //         "customer_no" => $request->customer_no,
+        //         "user_alias" => $request->user_alias
+        //     ],
+
+        // ];
+
+        //   return $data;
+
         $account_no = $request->account_no;
         $destinationAccountId = $request->destinationAccountId;
         $amount = $request->amount;
@@ -56,7 +58,7 @@ class OwnAccountGoForPendingController extends Controller
         $post_date = Carbon::now();
         $post_date = $post_date->toDateTimeString();
 
-        // return $data;
+
 
         $query_acc_mandate = DB::table('vw_ibank_mandate')->where('acct_link', $account_no)->value('mandate');
 
@@ -89,7 +91,7 @@ class OwnAccountGoForPendingController extends Controller
         if ($query_result) {
             return response()->json([
                 'responseCode' => '000',
-                'message' => "Transfer ( From: $account_no ~ To: $destinationAccountId ~ Amount: $currency $amount) pending for approval ",
+                'message' => "Transfer ( From: $account_no ~ To: $destinationAccountId ~ Amount: $currency $amount) pending approval ",
                 "data" => null
             ], 200);
         } else {
