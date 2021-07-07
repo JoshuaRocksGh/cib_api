@@ -133,7 +133,7 @@ class RequestApprovalController extends Controller
 
         // OWN ACCOUNT
         $customerTel = $request_query->debit_tel;
-        $postBy = $request_query->postedby;
+        $postBy = $user_id;
         $approvedBy = $user_id;
         $transBy = $request_query->transby;
         $appBy = null;
