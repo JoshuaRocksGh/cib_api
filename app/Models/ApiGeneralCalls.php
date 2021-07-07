@@ -267,7 +267,7 @@ class ApiGeneralCalls extends Model
 
 
 
-    public function call_ach_transfer($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $bankCode, $amount, $narration, $documentRef, $postedBy, $approvedBy, $beneficiaryName, $beneficiaryAddress, $ex1, $ex2, $ex3, $deviceIp, $currency, $authToken, $approvers)
+    public function call_ach_transfer($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $bankCode, $bankName, $amount, $narration, $documentRef, $postedBy, $approvedBy, $beneficiaryName, $beneficiaryAddress, $ex1, $ex2, $ex3, $deviceIp, $currency, $authToken, $approvers)
     {
 
         if(is_null($approvers)){
@@ -283,7 +283,7 @@ class ApiGeneralCalls extends Model
         $data = [
             "amount"=> $amount,
             "authToken"=> $authToken,
-            "bankName"=> "string",
+            "bankName"=> $bankName,
             "beneficiaryAddress"=> $beneficiaryAddress,
             "beneficiaryName"=> $beneficiaryName,
             "channel"=> "NET",
@@ -296,7 +296,7 @@ class ApiGeneralCalls extends Model
             "transferCurrency"=> $currency
         ];
 
-        return $data;
+        // return $data;
 
         $headers = [
             "x-api-key"=> "123",
@@ -305,7 +305,7 @@ class ApiGeneralCalls extends Model
             "x-api-token"=> "123"
         ];
 
-        return response()->json($data, 200);
+        // return response()->json($data, 200);
 
         $response = Http::post(env('API_BASE_URL') . "/transfers/achBankTransfer", $data);
 
@@ -323,9 +323,9 @@ class ApiGeneralCalls extends Model
 
             if ($result->responseCode == '000' || $result->responseCode == '200') {
 
-                $approve_req = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $check_mandate, 'request_status' => 'A', 'waitinglist' => 'approved', 'comment_1' => $comment, 'DOCUMENTREF' => $documentRef, 'comment_1_by' => $comment_by, 'res_message' => $result->message, 'res_date' => $res_date]);
+                $approve_req = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $check_mandate, 'request_status' => 'A', 'waitinglist' => 'approved', 'comment_1' => $comment, 'DOCUMENTREF' => $documentRef, 'comment_1_by' => $comment_by, 'res_message' => $result->message, 'res_date' => $res_date, 'approvers' => $approvers]);
 
-                $request = Auth::user()->user_alias . ' => ' . 'After approval received this response: => ' . $result->message;
+                $request = $user_alias . ' => ' . 'After approval received this response: => ' . $result->message;
 
                 $this->request_logs($request, $request_type_check, $result->message, $postedBy);
 
@@ -405,6 +405,8 @@ class ApiGeneralCalls extends Model
         $data = json_encode($data);
         //    return $data;
 
+        $user_alias = $postedBy;
+
         $documentRef = substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 2) . time();
         // $creditAccountNumber =array();
 
@@ -454,7 +456,7 @@ class ApiGeneralCalls extends Model
 
                 $approve_req = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $check_mandate, 'request_status' => 'A', 'waitinglist' => 'approved', 'comment_1' => $comment, 'DOCUMENTREF' => $documentRef, 'comment_1_by' => $comment_by, 'res_message' => $result->message, 'res_date' => $res_date]);
 
-                $request = Auth::user()->user_alias . ' => ' . 'After approval received this response: => ' . $result->message;
+                $request = $user_alias . ' => ' . 'After approval received this response: => ' . $result->message;
 
                 $this->request_logs($request, $request_type_check, $result->message, $postedBy);
 

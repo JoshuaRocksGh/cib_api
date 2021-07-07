@@ -119,6 +119,7 @@ class RequestApprovalController extends Controller
         $debitAccountNumber = $request_query->account_no;
         $creditAccountNumber = $request_query->creditaccountnumber;
         $bankCode = $request_query->bankcode;
+        $bankName = $request_query->bank_name;
         $beneficiaryName =  $request_query->beneficiaryname;
         $amount = $request_query->amount;
         $currency =  $request_query->currency;
@@ -237,9 +238,9 @@ class RequestApprovalController extends Controller
 
                     // OTHER BANK TRANSFER
                 case "ACH":
-                    // return 'OTBT';
+                    // return 'ACH';
 
-                    $req_result = $api_request->call_ach_transfer($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $bankCode, $amount, $narration, $documentRef, $postedBy, $approvedBy, $beneficiaryName, $beneficiaryAddress, $ex1, $ex2, $ex3, $deviceIp, $currency, $authToken, $approvers);
+                    $req_result = $api_request->call_ach_transfer($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $bankCode, $bankName, $amount, $narration, $documentRef, $postedBy, $approvedBy, $beneficiaryName, $beneficiaryAddress, $ex1, $ex2, $ex3, $deviceIp, $currency, $authToken, $approvers);
 
                     //$req_result = $api_request->call_other_bank_transfer($request_id, $request_type_check, $result['check_mandate'], $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $bankCode, $amount, $narration, $documentRef, $postedBy, $approvedBy, $beneficiaryName, $beneficiaryAddress, $ex1, $ex2, $ex3);
 
