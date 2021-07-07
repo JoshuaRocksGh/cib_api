@@ -8,6 +8,7 @@ use App\Http\Controllers\BULK\ImportExcelController;
 use App\Http\Controllers\PendingRequestController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\Requests\StatementRequestGoForPendingController;
+use App\Http\Controllers\Transfers\AchGoForPendingController;
 use App\Http\Controllers\Transfers\OwnAccountGoForPendingController;
 use App\Http\Controllers\Transfers\SameBankGoForPendingController;
 // use App\Http\Controllers\ApprovalRequestController;
@@ -38,6 +39,7 @@ Route::get('/update-bulk-korpor-upload-detail-list-api', [BulkKorporController::
 
 Route::post('/own-account-gone-for-pending', [OwnAccountGoForPendingController::class, 'OwnAccountGoForPending'])->name('own-account-gone-for-pending');
 Route::post('/same-bank-gone-for-pending', [SameBankGoForPendingController::class, 'sameBankGoForPending'])->name('same-bank-gone-for-pending');
+Route::post('/ach-bank-gone-for-pending', [AchGoForPendingController::class, 'AchGoForPending'])->name('ach-bank-gone-for-pending');
 Route::post('/statement-request-gone-for-pending', [StatementRequestGoForPendingController::class, 'statementRequestGoForPending'])->name('statement-request-gone-for-pending');
 
 Route::get('/get-bulk-upload-list', [BulkTransferController::class, 'get_bulk_upload_list'])->name('get-bulk-upload-list');

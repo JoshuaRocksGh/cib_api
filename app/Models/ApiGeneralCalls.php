@@ -296,6 +296,8 @@ class ApiGeneralCalls extends Model
             "transferCurrency"=> $currency
         ];
 
+        return $data;
+
         $headers = [
             "x-api-key"=> "123",
             "x-api-secret"=> "123",
