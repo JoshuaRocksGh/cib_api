@@ -267,49 +267,57 @@ class ApiGeneralCalls extends Model
 
 
 
-    public function call_other_bank_transfer($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $bankCode, $amount, $narration, $documentRef, $postedBy, $approvedBy, $beneficiaryName, $beneficiaryAddress, $ex1, $ex2, $ex3)
+    public function call_ach_transfer($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $bankCode, $amount, $narration, $documentRef, $postedBy, $approvedBy, $beneficiaryName, $beneficiaryAddress, $ex1, $ex2, $ex3, $deviceIp, $currency, $authToken, $approvers)
     {
 
+        if(is_null($approvers)){
+            $approvers = $postedBy;
+        }else{
+            $approvers = $approvers . ',' . $postedBy;
+        }
+
         $documentRef = substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 2) . time();
-        $curl = curl_init();
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => env('API_URL') . "/account/transfer/other-bank",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "PUT",
-            CURLOPT_POSTFIELDS => "debitAccountNumber=$debitAccountNumber&creditAccountNumber=$creditAccountNumber&bankCode=$bankCode&amount=$amount&narration=$narration&documentRef=$documentRef&postedBy=$postedBy&approvedBy=$approvedBy&beneficiaryName=$beneficiaryName&beneficiaryAddress=$beneficiaryAddress&ex1=$ex1&ex3=$ex2&ex3=$ex3",
-            CURLOPT_HTTPHEADER => array(
-                "Content-Type: application/x-www-form-urlencoded",
-                "x-api-key: " . env('X_API_KEY'),
-                "x-api-secret: " . env('X_API_SECRET')
-            ),
-        ));
-        $response = curl_exec($curl);
+        $user_alias = $postedBy;
 
-        $err = curl_error($curl);
+        $data = [
+            "amount"=> $amount,
+            "authToken"=> $authToken,
+            "bankName"=> "string",
+            "beneficiaryAddress"=> $beneficiaryAddress,
+            "beneficiaryName"=> $beneficiaryName,
+            "channel"=> "NET",
+            "creditAccount"=> $creditAccountNumber,
+            "debitAccount"=> $debitAccountNumber,
+            "deviceIp"=> $deviceIp,
+            "entrySource"=> "C",
+            "secPin"=> "string",
+            "transactionDetails"=> $narration,
+            "transferCurrency"=> $currency
+        ];
 
-        curl_close($curl);
+        $headers = [
+            "x-api-key"=> "123",
+            "x-api-secret"=> "123",
+            "x-api-source"=> "123",
+            "x-api-token"=> "123"
+        ];
+
+        return response()->json($data, 200);
+
+        $response = Http::post(env('API_BASE_URL') . "/transfers/achBankTransfer", $data);
 
 
-        if ($err) {
-            return json_encode([
-                'message' => "cURL Error #:" . $err,
-                'responseCode' => '404',
-            ]);
-        } else {
+        $result_i = new ApiBaseResponse();
+        $result = (object) $result_i->api_response($response);
 
-            // $response = json_decode($response);
-            // return $response;
+        // return $result_i->api_response($response);
 
-            $result = json_decode($response);
+        $res_date = Carbon::now();
+        $res_date = $res_date->toDateTimeString();
 
-            $res_date = Carbon::now();
-            $res_date = $res_date->toDateTimeString();
+
+
 
             if ($result->responseCode == '000' || $result->responseCode == '200') {
 
@@ -334,7 +342,7 @@ class ApiGeneralCalls extends Model
                     'data' => null
                 ];
             }
-        }
+
     }
 
 
