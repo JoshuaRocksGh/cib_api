@@ -214,7 +214,7 @@ class RequestApprovalController extends Controller
             switch ($request_type_check) {
 
                     // THIRD PARTY TRANSFER
-                case "TPT":
+                case "SAB":
                     // return 'TPT';
 
                     $req_result = $api_request->call_same_bank_transfer($request_id, $request_type_check, $result['check_mandate'], $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $amount, $documentRef, $narration, $postBy, $appBy, $customerTel, $transBy, $deviceIp, $currency, $authToken, $approvers);

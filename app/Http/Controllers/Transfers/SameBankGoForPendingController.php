@@ -87,7 +87,7 @@ class SameBankGoForPendingController extends Controller
             [
                 'request_type' => 'SAB',
                 'request_status' => 'P',
-                'user_id' => $customer_no,
+                'user_id' => $postBy,
                 'user_name' => $user_alias,
                 'customer_no' => $customer_no,
                 'debit_tel' => $customerTel,

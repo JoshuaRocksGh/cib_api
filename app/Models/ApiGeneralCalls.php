@@ -93,13 +93,15 @@ class ApiGeneralCalls extends Model
                 return [
                     'responseCode' =>  '000',
                     'status' => 'approved',
-                    'message' =>  $result->message
+                    'message' =>  $result->message,
+                    'data' => null
                 ];
             } else {
                 return [
                     'responseCode' =>  '666',
                     'status' => 'did not work',
-                    'message' =>  $result->message
+                    'message' =>  $result->message,
+                    'data' => null
                 ];
             }
 
@@ -166,7 +168,7 @@ class ApiGeneralCalls extends Model
         $result_i = new ApiBaseResponse();
         $result = (object) $result_i->api_response($response);
 
-
+        // return $result_i->api_response($response);
 
             $res_date = Carbon::now();
             $res_date = $res_date->toDateTimeString();
@@ -183,13 +185,15 @@ class ApiGeneralCalls extends Model
                 return [
                     'responseCode' =>  '000',
                     'status' => 'approved',
-                    'message' =>  $result->message
+                    'message' =>  $result->message,
+                    'data' => null
                 ];
             } else {
                 return [
                     'responseCode' =>  '666',
                     'status' => 'did not work',
-                    'message' =>  $result->message
+                    'message' =>  $result->message,
+                    'data' => null
                 ];
             }
 
@@ -319,13 +323,15 @@ class ApiGeneralCalls extends Model
                 return [
                     'responseCode' =>  '000',
                     'status' => 'approved',
-                    'message' =>  $result->message
+                    'message' =>  $result->message,
+                    'data' => null
                 ];
             } else {
                 return [
                     'responseCode' =>  '666',
                     'status' => 'did not work',
-                    'message' =>  $result->message
+                    'message' =>  $result->message,
+                    'data' => null
                 ];
             }
         }
@@ -447,13 +453,15 @@ class ApiGeneralCalls extends Model
                 return [
                     'responseCode' =>  '000',
                     'status' => 'approved',
-                    'message' =>  $result->message
+                    'message' =>  $result->message,
+                    'data' => null
                 ];
             } else {
                 return [
                     'responseCode' =>  '666',
                     'status' => 'did not work',
-                    'message' =>  $result->message
+                    'message' =>  $result->message,
+                    'data' => null
                 ];
             }
         }
