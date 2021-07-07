@@ -61,7 +61,7 @@ class ApprovedFunc extends Model
         if (empty($find_user)) {
             return [
                 'responseCode' => '400',
-                'message' => 'User does not has the right',
+                'message' => 'User not allowed to approve',
                 'data' => NULL
             ];
         }
