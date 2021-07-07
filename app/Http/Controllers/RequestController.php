@@ -14,7 +14,11 @@ class RequestController extends Controller
         $request_status = $request->query('requestStatus');
 
 
-        $db_query = DB::table('tb_corp_bank_req')->where('request_status', $request_status )->where('customer_no', $customer_no)->get();
+        $db_query = DB::table('tb_corp_bank_req')
+                    ->where('request_status', $request_status )
+                    ->where('customer_no', $customer_no)
+                    ->orderByDesc('request_id')
+                    ->get();
 
         return response()->json([
             'responseCode' => '000',
