@@ -16,6 +16,7 @@ class ApiBaseResponse extends Model
 
         if ($response->ok()) {    // API response status code is 200
 
+            // return $response;
             $result = json_decode($response->body());
             // return $result->responseCode;
 
@@ -43,7 +44,7 @@ class ApiBaseResponse extends Model
             DB::table('tb_error_logs')->insert([
                 'platform' => 'ONLINE_INTERNET_BANKING',
                 'user_id' => 'AUTH',
-                'code' => $response->status(),
+                'responseCode' => $response->status(),
                 'message' => $response->body()
             ]);
 

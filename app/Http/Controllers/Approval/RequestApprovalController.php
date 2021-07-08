@@ -332,11 +332,12 @@ class RequestApprovalController extends Controller
                     // return $req_result;
                     break;
                 case "BULK":
+                    // return 'BULK';
                     // return 'BULK -> ' . $result['check_mandate'];
-                    Session::put('batch_no', $batch_no);
+                    // Session::put('batch_no', $batch_no);
 
 
-                    return $req_result = $api_request->call_Bulk_($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $bankCode, $channelCode, $debitCurrency, $debitNarration, $postedBy, $approvedBy);
+                    return $req_result = $api_request->call_Bulk_($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $bankCode, $channelCode, $debitCurrency, $debitNarration, $batch_no, $postedBy, $approvedBy);
 
                     // $req_result = $api_request->stop_cheque($result['check_mandate'], $account_no, $cheque_from_No, $cheque_to_No, $date_issued, $beneficiary_name, $amount );
                     // return $req_result;
