@@ -94,13 +94,6 @@ class AchGoForPendingController extends Controller
 
         ];
 
-        return  [
-            'responseCode' => '444',
-            'status' => 'success',
-            'message' => 'Transfer to other local bank pending approval',
-            'data' => $data
-        ];
-
         $query_result = DB::table('tb_corp_bank_req')->insert($data);
 
         if ($query_result) {
