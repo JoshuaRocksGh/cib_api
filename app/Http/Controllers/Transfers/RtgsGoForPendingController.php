@@ -21,6 +21,7 @@ class RtgsGoForPendingController extends Controller
             'user_alias' => 'required',
             'account_no' => 'required',
             'currency' => 'required',
+            'currency_iso' => 'required',
             'bank_code' => 'required',
             'bank_name' => 'required',
             'bene_account' => 'required',
@@ -53,6 +54,7 @@ class RtgsGoForPendingController extends Controller
         $beneficiaryName = $request->bene_name;
         $amount = $request->amount;
         $currency = $request->currency;
+        $currency_iso = $request->currency_iso;
         $approvedBy = null;
         $beneficiaryAddress = $request->bene_address;
         $documentRef = strtoupper(substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 2) . time());
@@ -77,6 +79,7 @@ class RtgsGoForPendingController extends Controller
                 'user_id' => $user_id,
                 'amount' => $amount,
                 'currency' => $currency,
+                'currency_2' => $currency_iso,
                 'beneficiaryAddress' => $beneficiaryAddress,
                 'documentRef' => $documentRef,
                 'account_mandate' => $account_mandate,
