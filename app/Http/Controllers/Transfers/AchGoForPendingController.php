@@ -21,13 +21,13 @@ class AchGoForPendingController extends Controller
             'user_alias' => 'required',
             'account_no' => 'required',
             'currency' => 'required',
-            'bank_code' => 'required',
+            // 'bank_code' => 'required',
             'bank_name' => 'required',
             'bene_account' => 'required',
             'bene_name' => 'required',
             'bene_address' => 'required',
             'amount' => 'required',
-            'bene_tel' => 'required',
+            //'bene_tel' => 'required',
             'narration' => 'required',
 
         ]);
@@ -108,6 +108,5 @@ class AchGoForPendingController extends Controller
                 'data' => null
             ];
         }
-
     }
 }
