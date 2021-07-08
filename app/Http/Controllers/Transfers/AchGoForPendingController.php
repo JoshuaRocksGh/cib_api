@@ -21,6 +21,7 @@ class AchGoForPendingController extends Controller
             'user_alias' => 'required',
             'account_no' => 'required',
             'currency' => 'required',
+            'currency_iso' => 'required',
             // 'bank_code' => 'required',
             'bank_name' => 'required',
             'bene_account' => 'required',
@@ -49,10 +50,11 @@ class AchGoForPendingController extends Controller
         $debitAccountNumber = $request->account_no;
         $creditAccountNumber = $request->bene_account;
         $bankCode = substr($request->bene_account, 0, 3);
-        $bankName =  strtoupper($request->bene_name);
+        $bankName =  strtoupper($request->bank_name);
         $beneficiaryName = $request->bene_name;
         $amount = $request->amount;
         $currency = $request->currency;
+        $currency_iso = $request->currency_iso;
         $approvedBy = null;
         $beneficiaryAddress = $request->bene_address;
         $documentRef = strtoupper(substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 2) . time());
@@ -65,33 +67,41 @@ class AchGoForPendingController extends Controller
 
         // PLEASE SEND IT TO APPROVAL
 
-        $query_result = DB::table('tb_corp_bank_req')->insert(
-            [
-                'request_type' => 'ACH',
-                'request_status' => 'P',
-                'account_no'  => $debitAccountNumber,
-                'creditAccountNumber' => $creditAccountNumber,
-                'bankCode' => $bankCode,
-                'bank_name' => $bankName,
-                'beneficiaryName' => $beneficiaryName,
-                'user_id' => $user_id,
-                'amount' => $amount,
-                'currency' => $currency,
-                'beneficiaryAddress' => $beneficiaryAddress,
-                'documentRef' => $documentRef,
-                'account_mandate' => $account_mandate,
-                'postedBy' => $postedBy,
-                'narration' => $narration,
-                'ex1' => $ex1,
-                'ex2' => $ex2,
-                'ex3' => $ex3,
-                'waitinglist' => 'not approved',
-                'user_name' => $user_alias,
-                'customer_no' => $customer_no,
-                'account_mandate' => $account_mandate,
+        $data = [
+            'request_type' => 'ACH',
+            'request_status' => 'P',
+            'account_no'  => $debitAccountNumber,
+            'creditAccountNumber' => $creditAccountNumber,
+            'bankCode' => $bankCode,
+            'bank_name' => $bankName,
+            'beneficiaryName' => $beneficiaryName,
+            'user_id' => $user_id,
+            'amount' => $amount,
+            'currency' => $currency,
+            'currency_2' => $currency_iso,
+            'beneficiaryAddress' => $beneficiaryAddress,
+            'documentRef' => $documentRef,
+            'account_mandate' => $account_mandate,
+            'postedBy' => $postedBy,
+            'narration' => $narration,
+            'ex1' => $ex1,
+            'ex2' => $ex2,
+            'ex3' => $ex3,
+            'waitinglist' => 'not approved',
+            'user_name' => $user_alias,
+            'customer_no' => $customer_no,
+            'account_mandate' => $account_mandate,
 
-            ]
-        );
+        ];
+
+        return  [
+            'responseCode' => '444',
+            'status' => 'success',
+            'message' => 'Transfer to other local bank pending approval',
+            'data' => $data
+        ];
+
+        $query_result = DB::table('tb_corp_bank_req')->insert($data);
 
         if ($query_result) {
             return [
