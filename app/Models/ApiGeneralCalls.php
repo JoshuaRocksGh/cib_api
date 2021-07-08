@@ -162,7 +162,7 @@ class ApiGeneralCalls extends Model
 
         // return response()->json($data, 200);
 
-        $response = Http::post(env('API_BASE_URL') . "/transfers/sameBank", $data);
+        $response = Http::post(env('API_BASE_URL') . "transfers/sameBank", $data);
 
 
         $result_i = new ApiBaseResponse();
@@ -432,11 +432,19 @@ class ApiGeneralCalls extends Model
 
 
 
-    public function call_Bulk_($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $bankcode, $channelCode, $debitCurrency, $debitNarration, $postedBy, $approvedBy)
+    public function call_Bulk_($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $bankcode, $channelCode, $debitCurrency, $debitNarration, $batch_no, $postedBy, $approvedBy)
     {
-        $batch_no = Session::get('batch_no');
+        //$batch_no = Session::get('batch_no');
 
-        $creditAccounts = DB::table('tb_corp_bank_import_excel')->where(['account_no' => $debitAccountNumber,  'batch_no' => $batch_no])->get();
+        if(is_null($approvedBy)){
+            $approvers = $postedBy;
+        }else{
+            $approvers = $approvedBy . ',' . $postedBy;
+        }
+
+        $creditAccounts = DB::table('tb_corp_bank_import_excel')->where([  'batch_no' => $batch_no])->get();
+
+        // return $creditAccounts;
 
         $creditAccountData = array();
         $total_amt = 0;
@@ -455,26 +463,8 @@ class ApiGeneralCalls extends Model
         // return $total_amt;
 
         $debitAccountData = array();
-        // $debitAccountData[] = [
-        //     "debitAccount" => $debitAccountNumber,
-        //     "debitAmount" =>  $total_amt,
-        //     "debitCurrency" => $debitCurrency,
-        //     "debitNarration" => $debitNarration,
-        //     "department" => null,
-        //     'referenceNo' => $batch_no,
-        //     'transType' => "INTB",
-        //     'postedBy' => $postedBy,
-        //     'unit' => null
-
-        // ];
-        //  return $creditAccountData;
-
-        $data = [
-            'approvedBy' => $approvedBy,
-            'channelCode' => $channelCode,
-            'creditAccounts' => $creditAccountData,
+        $debitAccountData[] = [
             "debitAccount" => $debitAccountNumber,
-            "bankType" => $bankcode,
             "debitAmount" =>  $total_amt,
             "debitCurrency" => $debitCurrency,
             "debitNarration" => $debitNarration,
@@ -483,9 +473,27 @@ class ApiGeneralCalls extends Model
             'transType' => "INTB",
             'postedBy' => $postedBy,
             'unit' => null
+
         ];
-        // return $data;
-        $data = json_encode($data);
+        //  return $debitAccountData;
+
+        $data = [
+            'approvedBy' => $approvedBy,
+            'channelCode' => $channelCode,
+            "bankType" => $bankcode,
+            "debitAmount" =>  $total_amt,
+            "debitCurrency" => $debitCurrency,
+            "debitNarration" => $debitNarration,
+            "department" => null,
+            'referenceNo' => $batch_no,
+            'transType' => "INTB",
+            'postedBy' => $postedBy,
+            'unit' => null,
+            "debitAccount" => $debitAccountData,
+            'creditAccounts' => $creditAccountData
+            
+        ];
+        
         //    return $data;
 
         $user_alias = $postedBy;
@@ -493,10 +501,48 @@ class ApiGeneralCalls extends Model
         $documentRef = substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 2) . time();
         // $creditAccountNumber =array();
 
+        // return env('API_BASE_URL') . "transfers/sameBankBulkUpload";
+
+        $response = Http::post(env('API_BASE_URL') . "transfers/sameBankBulkUpload", $data);
+        
+    // return $response;
+        $result_i = new ApiBaseResponse();
+        $result = (object) $result_i->api_response($response);
+
+        // return $result_i->api_response($response);
+
+            $res_date = Carbon::now();
+            $res_date = $res_date->toDateTimeString();
+
+            if ($result->responseCode == '000' || $result->responseCode == '200') {
+
+                $approve_req = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $check_mandate, 'request_status' => 'A', 'waitinglist' => 'approved', 'comment_1' => $comment, 'DOCUMENTREF' => $documentRef, 'comment_1_by' => $comment_by, 'res_message' => $result->message, 'res_date' => $res_date, 'approvers' => $approvers]);
+
+                $request = $user_alias . ' => ' . 'After approval received this response: => ' . $result->message;
+
+                $this->request_logs($request, $request_type_check, $result->message, $approvedBy);
+
+
+                return [
+                    'responseCode' =>  '000',
+                    'status' => 'approved',
+                    'message' =>  $result->message,
+                    'data' => null
+                ];
+            } else {
+                return [
+                    'responseCode' =>  '666',
+                    'status' => 'did not work',
+                    'message' =>  $result->message,
+                    'data' => null
+                ];
+            }
+
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => env('API_URL') . "/account/performBulkCredit",
+            CURLOPT_URL => env('API_BASE_URL') . "transfers/sameBankBulkUpload",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
