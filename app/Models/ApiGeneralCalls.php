@@ -202,71 +202,6 @@ class ApiGeneralCalls extends Model
 
 
 
-
-
-    public function call_account($accountId)
-    {
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => env('API_URL') .  "/account/$accountId",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_POSTFIELDS => "accountId=$accountId",
-            CURLOPT_HTTPHEADER => array(
-                "Content-Type: application/x-www-form-urlencoded",
-                "x-api-key: " . env('X_API_KEY'),
-                "x-api-secret: " . env('X_API_SECRET')
-            ),
-        ));
-
-        $response = curl_exec($curl);
-
-        $err = curl_error($curl);
-
-        curl_close($curl);
-
-
-        if ($err) {
-            return json_encode([
-                'message' => "cURL Error #:" . $err,
-                'responseCode' => '404',
-            ]);
-        } else {
-
-            $result = json_decode($response);
-            // return $response;
-
-
-            if (isset($result->code) != '000') {
-
-                return [
-                    'responseCode' =>  '000',
-                    'message' =>  'Account Verified',
-                    'data' => $result
-                ];
-            } else {
-                // return $response;
-
-                return [
-                    'responseCode' =>  $result->code,
-                    'message' => $result->message
-                ];
-            }
-        }
-    }
-
-
-
-
-
-
     public function call_ach_transfer($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $bankCode, $bankName, $amount, $narration, $documentRef, $postedBy, $approvedBy, $beneficiaryName, $beneficiaryAddress, $ex1, $ex2, $ex3, $deviceIp, $currency, $authToken, $approvers)
     {
 
@@ -346,6 +281,154 @@ class ApiGeneralCalls extends Model
             }
 
     }
+
+
+
+
+    public function call_rtgs_transfer($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $bankCode, $bankName, $amount, $narration, $documentRef, $postedBy, $approvedBy, $beneficiaryName, $beneficiaryAddress, $ex1, $ex2, $ex3, $deviceIp, $currency, $authToken, $approvers)
+    {
+
+        if(is_null($approvers)){
+            $approvers = $postedBy;
+        }else{
+            $approvers = $approvers . ',' . $postedBy;
+        }
+
+        $documentRef = substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 2) . time();
+
+        $user_alias = $postedBy;
+
+        $data = [
+            "amount"=> $amount,
+            "authToken"=> $authToken,
+            "bankName"=> $bankName,
+            "beneficiaryAddress"=> $beneficiaryAddress,
+            "beneficiaryName"=> $beneficiaryName,
+            "channel"=> "NET",
+            "creditAccount"=> $creditAccountNumber,
+            "debitAccount"=> $debitAccountNumber,
+            "deviceIp"=> $deviceIp,
+            "entrySource"=> "C",
+            "secPin"=> null,
+            "transactionDetails"=> $narration,
+            "transferCurrency"=> $currency
+        ];
+
+        // return $data;
+
+        $headers = [
+            "x-api-key"=> "123",
+            "x-api-secret"=> "123",
+            "x-api-source"=> "123",
+            "x-api-token"=> "123"
+        ];
+
+        // return response()->json($data, 200);
+
+        $response = Http::post(env('API_BASE_URL') . "/transfers/rtgsBankTransfer", $data);
+
+
+        $result_i = new ApiBaseResponse();
+        $result = (object) $result_i->api_response($response);
+
+        // return $result_i->api_response($response);
+
+        $res_date = Carbon::now();
+        $res_date = $res_date->toDateTimeString();
+
+
+
+
+            if ($result->responseCode == '000' || $result->responseCode == '200') {
+
+                $approve_req = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $check_mandate, 'request_status' => 'A', 'waitinglist' => 'approved', 'comment_1' => $comment, 'DOCUMENTREF' => $documentRef, 'comment_1_by' => $comment_by, 'res_message' => $result->message, 'res_date' => $res_date, 'approvers' => $approvers]);
+
+                $request = $user_alias . ' => ' . 'After approval received this response: => ' . $result->message;
+
+                $this->request_logs($request, $request_type_check, $result->message, $postedBy);
+
+
+                return [
+                    'responseCode' =>  '000',
+                    'status' => 'approved',
+                    'message' =>  $result->message,
+                    'data' => null
+                ];
+            } else {
+                return [
+                    'responseCode' =>  '666',
+                    'status' => 'did not work',
+                    'message' =>  $result->message,
+                    'data' => null
+                ];
+            }
+
+    }
+
+
+
+
+    public function call_account($accountId)
+    {
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => env('API_URL') .  "/account/$accountId",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_POSTFIELDS => "accountId=$accountId",
+            CURLOPT_HTTPHEADER => array(
+                "Content-Type: application/x-www-form-urlencoded",
+                "x-api-key: " . env('X_API_KEY'),
+                "x-api-secret: " . env('X_API_SECRET')
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+
+        if ($err) {
+            return json_encode([
+                'message' => "cURL Error #:" . $err,
+                'responseCode' => '404',
+            ]);
+        } else {
+
+            $result = json_decode($response);
+            // return $response;
+
+
+            if (isset($result->code) != '000') {
+
+                return [
+                    'responseCode' =>  '000',
+                    'message' =>  'Account Verified',
+                    'data' => $result
+                ];
+            } else {
+                // return $response;
+
+                return [
+                    'responseCode' =>  $result->code,
+                    'message' => $result->message
+                ];
+            }
+        }
+    }
+
+
+
+
 
 
 

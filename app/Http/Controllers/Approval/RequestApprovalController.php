@@ -248,6 +248,16 @@ class RequestApprovalController extends Controller
                     return $req_result;
                     break;
 
+            case "RTGS":
+                // return 'ACH';
+
+                $req_result = $api_request->call_rtgs_transfer($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $bankCode, $bankName, $amount, $narration, $documentRef, $postedBy, $approvedBy, $beneficiaryName, $beneficiaryAddress, $ex1, $ex2, $ex3, $deviceIp, $currency, $authToken, $approvers);
+
+                //$req_result = $api_request->call_other_bank_transfer($request_id, $request_type_check, $result['check_mandate'], $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $bankCode, $amount, $narration, $documentRef, $postedBy, $approvedBy, $beneficiaryName, $beneficiaryAddress, $ex1, $ex2, $ex3);
+
+                // $req_result = $api_request->statement_req($request_id, $request_type_check, $result['check_mandate'], $comment, $comment_by, $account_no, $start_date, $end_date, $type, $user_alias);
+                return $req_result;
+                break;
                     // STATEMENT REQUEST
                 case "STR":
                     // return 'STR -> ' . $result['check_mandate'];
