@@ -22,13 +22,13 @@ class RtgsGoForPendingController extends Controller
             'account_no' => 'required',
             'currency' => 'required',
             'currency_iso' => 'required',
-            'bank_code' => 'required',
+            // 'bank_code' => 'required',
             'bank_name' => 'required',
             'bene_account' => 'required',
             'bene_name' => 'required',
             'bene_address' => 'required',
             'amount' => 'required',
-            'bene_tel' => 'required',
+            // 'bene_tel' => 'required',
             'narration' => 'required',
 
         ]);
@@ -38,7 +38,7 @@ class RtgsGoForPendingController extends Controller
                 'responseCode' => '422',
                 'message' => 'Error validation error',
                 'error' => $validator->errors(),
-                'data' => null
+                'data' => $validator->errors()
             ], 200);
         }
         // return $request;
