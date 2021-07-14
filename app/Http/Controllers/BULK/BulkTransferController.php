@@ -54,7 +54,7 @@ class BulkTransferController extends Controller
 
         return response()->json([
             'responseCode' => '000',
-            'message' => "Detail of upload transfer",
+            'message' => "###############",
             'data' => $request
         ], 200);
 
