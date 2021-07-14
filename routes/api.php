@@ -44,7 +44,8 @@ Route::post('/ach-bank-gone-for-pending', [AchGoForPendingController::class, 'Ac
 Route::post('/rtgs-bank-gone-for-pending', [RtgsGoForPendingController::class, 'RtgsGoForPending'])->name('rtgs-bank-gone-for-pending');
 Route::post('/statement-request-gone-for-pending', [StatementRequestGoForPendingController::class, 'statementRequestGoForPending'])->name('statement-request-gone-for-pending');
 
-Route::get('/get-bulk-upload-list', [BulkTransferController::class, 'get_bulk_upload_list'])->name('get-bulk-upload-list');
+Route::get('/get-bulk-upload-list', [BulkTransferController::class, 'get_
+bulk_upload_list'])->name('get-bulk-upload-list');
 Route::get('/get-bulk-upload-detail-list-api', [BulkTransferController::class, 'get_bulk_upload_detail_list_api'])->name('get-bulk-upload-detail-list-api');
 Route::get('/pending-request-api' , [RequestController::class, 'all_approval_request'])->name('pending-request-api');
 Route::post('/approve-request-api', [ApprovalRequestController::class, 'approve_request'])->name('approve-request-api');
