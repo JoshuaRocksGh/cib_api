@@ -11,6 +11,8 @@ class BulkTransferController extends Controller
     public function get_bulk_upload_list(Request $request)
     {
 
+        return $request;
+
         $customerNumber = $request->query("customer_no");
         // return $customer_no;
 
