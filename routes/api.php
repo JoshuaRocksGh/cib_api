@@ -7,6 +7,7 @@ use App\Http\Controllers\BULK\BulkTransferController;
 use App\Http\Controllers\BULK\ImportExcelController;
 use App\Http\Controllers\PendingRequestController;
 use App\Http\Controllers\RequestController;
+use App\Http\Controllers\Requests\ChequeBookRequestGoForPendingController;
 use App\Http\Controllers\Requests\StatementRequestGoForPendingController;
 use App\Http\Controllers\Transfers\AchGoForPendingController;
 use App\Http\Controllers\Transfers\OwnAccountGoForPendingController;
@@ -48,13 +49,17 @@ Route::post('/post-bulk-upload-list', [BulkTransferController::class, 'post_bulk
 
 Route::get('/get-bulk-upload-list', [BulkTransferController::class, 'get_bulk_upload_list'])->name('get-bulk-upload-list');
 Route::get('/get-bulk-upload-detail-list-api', [BulkTransferController::class, 'get_bulk_upload_detail_list_api'])->name('get-bulk-upload-detail-list-api');
-Route::get('/pending-request-api' , [RequestController::class, 'all_approval_request'])->name('pending-request-api');
+Route::get('/pending-request-api', [RequestController::class, 'all_approval_request'])->name('pending-request-api');
 Route::post('/approve-request-api', [ApprovalRequestController::class, 'approve_request'])->name('approve-request-api');
 Route::post('/approved-request-api', [ApprovedRequestController::class, 'approved_request'])->name('approved-request-api');
 
-Route::get('/get-detail-pending-request-api' , [RequestController::class, 'get_detail_pending_request'])->name('get-detail-pending-request-api');
+Route::get('/get-detail-pending-request-api', [RequestController::class, 'get_detail_pending_request'])->name('get-detail-pending-request-api');
 
 Route::post('/account/getAccounts', [AccountController::class, 'get_accounts'])->name('getAccounts');
+
+#CHEQUE BOOK REQUEST
+Route::post('/chequebook-request', [ChequeBookRequestGoForPendingController::class, 'cheque_request'])->name('chequebook-request');
+
 
 #CIB APPROVAL
 Route::post('/request-approval', [RequestApprovalController::class, 'request_approval'])->name('request-approval');
