@@ -74,6 +74,7 @@ class OwnAccountGoForPendingController extends Controller
                 'account_no' => $account_no,
                 'amount' => $amount,
                 'currency' => $currency,
+                'currency_2' => $currency,
                 'account_mandate' => $query_acc_mandate,
                 'CREDITACCOUNTNUMBER' => $destinationAccountId,
                 'narration' => $narration,
