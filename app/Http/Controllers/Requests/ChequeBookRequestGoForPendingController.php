@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 class ChequeBookRequestGoForPendingController extends Controller
 {
     //
-    public function cheque_request(Request $request)
+    public function ChequeRequestGoForPending(Request $request)
     {
 
         $validator  = Validator::make($request->all(), [

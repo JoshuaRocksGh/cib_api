@@ -58,7 +58,7 @@ Route::get('/get-detail-pending-request-api', [RequestController::class, 'get_de
 Route::post('/account/getAccounts', [AccountController::class, 'get_accounts'])->name('getAccounts');
 
 #CHEQUE BOOK REQUEST
-Route::post('/chequebook-request', [ChequeBookRequestGoForPendingController::class, 'cheque_request'])->name('chequebook-request');
+Route::post('/chequebook-request', [ChequeBookRequestGoForPendingController::class, 'ChequeRequestGoForPending'])->name('chequebook-request');
 
 
 #CIB APPROVAL
