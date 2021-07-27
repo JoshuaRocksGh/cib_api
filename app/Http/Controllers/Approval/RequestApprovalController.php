@@ -352,4 +352,58 @@ class RequestApprovalController extends Controller
 
 
     }
+
+    public function reject_request_by_approver(Request $request)
+    {
+        // return 'request';
+
+        $request_id = $request->request_id;
+        $user_mandate = $request->user_mandate;
+        $user_id = $request->user_id;
+        $user_alias = $request->user_alias;
+        $customer_no = $request->customer_no;
+        $deviceIp = $request->deviceIp;
+        $authToken = $request->authToken;
+        $narration = $request->narration;
+
+        $request_query = DB::table('tb_corp_bank_req')
+        ->where('customer_no', $customer_no)
+        ->where('request_id', $request_id)
+        ->first();
+
+        if(!is_null($request_query)){
+            
+            $update_request = DB::table('tb_corp_bank_req')
+            ->where('customer_no', $customer_no)
+            ->where('request_id', $request_id)
+            ->update([
+                'request_status' => 'R',
+                'narration' => $narration
+            ]);
+
+            if($update_request){
+                return response()->json([
+                'responseCode' => '000',
+                'message' => 'This request has been reject successfully',
+                'data' => NULL
+                ], 200);
+            }else{
+                return response()->json([
+                'responseCode' => '600',
+                'message' => $request_id,
+                'data' => $request_query
+                ], 200);
+            }
+
+        }else{
+            return response()->json([
+                'responseCode' => '688',
+                'message' => 'Request does not exist',
+                'data' => NULL
+                ], 200);
+        }
+
+
+      
+    }
 }

@@ -58,3 +58,5 @@ Route::post('/account/getAccounts', [AccountController::class, 'get_accounts'])-
 
 #CIB APPROVAL
 Route::post('/request-approval', [RequestApprovalController::class, 'request_approval'])->name('request-approval');
+Route::post('/reject-request-by-approver', [RequestApprovalController::class, 'reject_request_by_approver'])->name('reject-request-by-approver');
+
