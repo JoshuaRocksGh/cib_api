@@ -32,9 +32,9 @@ class ApiGeneralCalls extends Model
         // ]);
 
 
-        if(is_null($approvers)){
+        if (is_null($approvers)) {
             $approvers = $postBy;
-        }else{
+        } else {
             $approvers = $approvers . ',' . $postBy;
         }
 
@@ -57,15 +57,15 @@ class ApiGeneralCalls extends Model
             "narration" => $narration,
             "secPin" => '1234',
             "userName" => $postBy,
-           // "category" => null,
+            // "category" => null,
 
         ];
 
         $headers = [
-            "x-api-key"=> "123",
-            "x-api-secret"=> "123",
-            "x-api-source"=> "123",
-            "x-api-token"=> "123"
+            "x-api-key" => "123",
+            "x-api-secret" => "123",
+            "x-api-source" => "123",
+            "x-api-token" => "123"
         ];
 
         // return response()->json($data, 200);
@@ -78,33 +78,32 @@ class ApiGeneralCalls extends Model
 
 
 
-            $res_date = Carbon::now();
-            $res_date = $res_date->toDateTimeString();
+        $res_date = Carbon::now();
+        $res_date = $res_date->toDateTimeString();
 
-            if ($result->responseCode == '000' || $result->responseCode == '200') {
+        if ($result->responseCode == '000' || $result->responseCode == '200') {
 
-                $approve_req = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $check_mandate, 'request_status' => 'A', 'waitinglist' => 'approved', 'comment_1' => $comment, 'DOCUMENTREF' => $documentRef, 'comment_1_by' => $comment_by, 'res_message' => $result->message, 'res_date' => $res_date, 'approvers' => $approvers]);
+            $approve_req = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $check_mandate, 'request_status' => 'A', 'waitinglist' => 'approved', 'comment_1' => $comment, 'DOCUMENTREF' => $documentRef, 'comment_1_by' => $comment_by, 'res_message' => $result->message, 'res_date' => $res_date, 'approvers' => $approvers]);
 
-                $request = $user_alias . ' => ' . 'After approval received this response: => ' . $result->message;
+            $request = $user_alias . ' => ' . 'After approval received this response: => ' . $result->message;
 
-                $this->request_logs($request, $request_type_check, $result->message, $postBy);
+            $this->request_logs($request, $request_type_check, $result->message, $postBy);
 
 
-                return [
-                    'responseCode' =>  '000',
-                    'status' => 'approved',
-                    'message' =>  $result->message,
-                    'data' => null
-                ];
-            } else {
-                return [
-                    'responseCode' =>  '666',
-                    'status' => 'did not work',
-                    'message' =>  $result->message,
-                    'data' => null
-                ];
-            }
-
+            return [
+                'responseCode' =>  '000',
+                'status' => 'approved',
+                'message' =>  $result->message,
+                'data' => null
+            ];
+        } else {
+            return [
+                'responseCode' =>  '666',
+                'status' => 'did not work',
+                'message' =>  $result->message,
+                'data' => null
+            ];
+        }
     }
 
 
@@ -125,9 +124,9 @@ class ApiGeneralCalls extends Model
         //         ]
         // ]);
 
-        if(is_null($approvers)){
+        if (is_null($approvers)) {
             $approvers = $postBy;
-        }else{
+        } else {
             $approvers = $approvers . ',' . $postBy;
         }
 
@@ -149,15 +148,15 @@ class ApiGeneralCalls extends Model
             "narration" => $narration,
             "secPin" => '1234',
             "userName" => $postBy,
-           // "category" => null,
+            // "category" => null,
 
         ];
 
         $headers = [
-            "x-api-key"=> "123",
-            "x-api-secret"=> "123",
-            "x-api-source"=> "123",
-            "x-api-token"=> "123"
+            "x-api-key" => "123",
+            "x-api-secret" => "123",
+            "x-api-source" => "123",
+            "x-api-token" => "123"
         ];
 
         // return response()->json($data, 200);
@@ -170,33 +169,112 @@ class ApiGeneralCalls extends Model
 
         // return $result_i->api_response($response);
 
-            $res_date = Carbon::now();
-            $res_date = $res_date->toDateTimeString();
+        $res_date = Carbon::now();
+        $res_date = $res_date->toDateTimeString();
 
-            if ($result->responseCode == '000' || $result->responseCode == '200') {
+        if ($result->responseCode == '000' || $result->responseCode == '200') {
 
-                $approve_req = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $check_mandate, 'request_status' => 'A', 'waitinglist' => 'approved', 'comment_1' => $comment, 'DOCUMENTREF' => $documentRef, 'comment_1_by' => $comment_by, 'res_message' => $result->message, 'res_date' => $res_date, 'approvers' => $approvers]);
+            $approve_req = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $check_mandate, 'request_status' => 'A', 'waitinglist' => 'approved', 'comment_1' => $comment, 'DOCUMENTREF' => $documentRef, 'comment_1_by' => $comment_by, 'res_message' => $result->message, 'res_date' => $res_date, 'approvers' => $approvers]);
 
-                $request = $user_alias . ' => ' . 'After approval received this response: => ' . $result->message;
+            $request = $user_alias . ' => ' . 'After approval received this response: => ' . $result->message;
 
-                $this->request_logs($request, $request_type_check, $result->message, $postBy);
+            $this->request_logs($request, $request_type_check, $result->message, $postBy);
 
 
-                return [
-                    'responseCode' =>  '000',
-                    'status' => 'approved',
-                    'message' =>  $result->message,
-                    'data' => null
-                ];
-            } else {
-                return [
-                    'responseCode' =>  '666',
-                    'status' => 'did not work',
-                    'message' =>  $result->message,
-                    'data' => null
-                ];
-            }
+            return [
+                'responseCode' =>  '000',
+                'status' => 'approved',
+                'message' =>  $result->message,
+                'data' => null
+            ];
+        } else {
+            return [
+                'responseCode' =>  '666',
+                'status' => 'did not work',
+                'message' =>  $result->message,
+                'data' => null
+            ];
+        }
+    }
 
+
+
+    public function cheque_book($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $account_no, $branch_code, $leaflet, $postBy, $deviceIp,  $authToken, $approvers)
+    {
+
+        // return response()->json([
+        //     'data' => [
+        //             'accountId' => $accountId,
+        //             'destinationAccountId' => $destinationAccountId,
+        //             'amount' => $amount,
+        //             'documentRef' => $documentRef,
+        //             'narration' => $narration,
+        //             'postBy' => $postBy,
+        //             'appBy' => $appBy,
+        //             'customerTel' => $customerTel,
+        //             'transBy' => $transBy
+        //         ]
+        // ]);
+
+        if (is_null($approvers)) {
+            $approvers = $postBy;
+        } else {
+            $approvers = $approvers . ',' . $postBy;
+        }
+
+        $documentRef = substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 2) . time();
+
+        $user_alias = $postBy;
+
+
+        $data = [
+
+
+            "accountNumber" => $account_no,
+            "branch" => $branch_code,
+            "deviceIP" => $deviceIp,
+            "entrySource" => "C",
+            "numberOfLeaves" => $leaflet,
+            "pinCode" => "string",
+            "tokenID" => $authToken,
+        ];
+
+        // return response()->json($data, 200);
+
+        $response = Http::post(env('API_BASE_URL') . "request/chequeBook", $data);
+
+
+        $result_i = new ApiBaseResponse();
+        $result = (object) $result_i->api_response($response);
+
+        // return $result_i->api_response($response);
+
+        $res_date = Carbon::now();
+        $res_date = $res_date->toDateTimeString();
+
+        if ($result->responseCode == '000' || $result->responseCode == '200') {
+
+            $approve_req = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $check_mandate, 'request_status' => 'A', 'waitinglist' => 'approved', 'comment_1' => $comment, 'DOCUMENTREF' => $documentRef, 'comment_1_by' => $comment_by, 'res_message' => $result->message, 'res_date' => $res_date, 'approvers' => $approvers]);
+
+            $request = $user_alias . ' => ' . 'After approval received this response: => ' . $result->message;
+
+            $this->request_logs($request, $request_type_check, $result->message, $postBy);
+
+
+            return [
+                'responseCode' =>  '000',
+                'status' => 'approved',
+                'message' =>  $result->message,
+                'data' => null
+            ];
+        } else {
+            return [
+                'responseCode' =>  '666',
+                'status' => 'did not work',
+                'message' =>  $result->message,
+                'data' => null
+            ];
+        }
     }
 
 
@@ -205,9 +283,9 @@ class ApiGeneralCalls extends Model
     public function call_ach_transfer($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $bankCode, $bankName, $amount, $narration, $documentRef, $postedBy, $approvedBy, $beneficiaryName, $beneficiaryAddress, $ex1, $ex2, $ex3, $deviceIp, $currency, $authToken, $approvers)
     {
 
-        if(is_null($approvers)){
+        if (is_null($approvers)) {
             $approvers = $postedBy;
-        }else{
+        } else {
             $approvers = $approvers . ',' . $postedBy;
         }
 
@@ -216,28 +294,28 @@ class ApiGeneralCalls extends Model
         $user_alias = $postedBy;
 
         $data = [
-            "amount"=> $amount,
-            "authToken"=> $authToken,
-            "bankName"=> $bankName,
-            "beneficiaryAddress"=> $beneficiaryAddress,
-            "beneficiaryName"=> $beneficiaryName,
-            "channel"=> "NET",
-            "creditAccount"=> $creditAccountNumber,
-            "debitAccount"=> $debitAccountNumber,
-            "deviceIp"=> $deviceIp,
-            "entrySource"=> "C",
-            "secPin"=> null,
-            "transactionDetails"=> $narration,
-            "transferCurrency"=> $currency
+            "amount" => $amount,
+            "authToken" => $authToken,
+            "bankName" => $bankName,
+            "beneficiaryAddress" => $beneficiaryAddress,
+            "beneficiaryName" => $beneficiaryName,
+            "channel" => "NET",
+            "creditAccount" => $creditAccountNumber,
+            "debitAccount" => $debitAccountNumber,
+            "deviceIp" => $deviceIp,
+            "entrySource" => "C",
+            "secPin" => null,
+            "transactionDetails" => $narration,
+            "transferCurrency" => $currency
         ];
 
         // return $data;
 
         $headers = [
-            "x-api-key"=> "123",
-            "x-api-secret"=> "123",
-            "x-api-source"=> "123",
-            "x-api-token"=> "123"
+            "x-api-key" => "123",
+            "x-api-secret" => "123",
+            "x-api-source" => "123",
+            "x-api-token" => "123"
         ];
 
         // return response()->json($data, 200);
@@ -256,30 +334,29 @@ class ApiGeneralCalls extends Model
 
 
 
-            if ($result->responseCode == '000' || $result->responseCode == '200') {
+        if ($result->responseCode == '000' || $result->responseCode == '200') {
 
-                $approve_req = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $check_mandate, 'request_status' => 'A', 'waitinglist' => 'approved', 'comment_1' => $comment, 'DOCUMENTREF' => $documentRef, 'comment_1_by' => $comment_by, 'res_message' => $result->message, 'res_date' => $res_date, 'approvers' => $approvers]);
+            $approve_req = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $check_mandate, 'request_status' => 'A', 'waitinglist' => 'approved', 'comment_1' => $comment, 'DOCUMENTREF' => $documentRef, 'comment_1_by' => $comment_by, 'res_message' => $result->message, 'res_date' => $res_date, 'approvers' => $approvers]);
 
-                $request = $user_alias . ' => ' . 'After approval received this response: => ' . $result->message;
+            $request = $user_alias . ' => ' . 'After approval received this response: => ' . $result->message;
 
-                $this->request_logs($request, $request_type_check, $result->message, $postedBy);
+            $this->request_logs($request, $request_type_check, $result->message, $postedBy);
 
 
-                return [
-                    'responseCode' =>  '000',
-                    'status' => 'approved',
-                    'message' =>  $result->message,
-                    'data' => null
-                ];
-            } else {
-                return [
-                    'responseCode' =>  '666',
-                    'status' => 'did not work',
-                    'message' =>  $result->message,
-                    'data' => null
-                ];
-            }
-
+            return [
+                'responseCode' =>  '000',
+                'status' => 'approved',
+                'message' =>  $result->message,
+                'data' => null
+            ];
+        } else {
+            return [
+                'responseCode' =>  '666',
+                'status' => 'did not work',
+                'message' =>  $result->message,
+                'data' => null
+            ];
+        }
     }
 
 
@@ -288,9 +365,9 @@ class ApiGeneralCalls extends Model
     public function call_rtgs_transfer($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $bankCode, $bankName, $amount, $narration, $documentRef, $postedBy, $approvedBy, $beneficiaryName, $beneficiaryAddress, $ex1, $ex2, $ex3, $deviceIp, $currency, $authToken, $approvers)
     {
 
-        if(is_null($approvers)){
+        if (is_null($approvers)) {
             $approvers = $postedBy;
-        }else{
+        } else {
             $approvers = $approvers . ',' . $postedBy;
         }
 
@@ -299,28 +376,28 @@ class ApiGeneralCalls extends Model
         $user_alias = $postedBy;
 
         $data = [
-            "amount"=> $amount,
-            "authToken"=> $authToken,
-            "bankName"=> $bankName,
-            "beneficiaryAddress"=> $beneficiaryAddress,
-            "beneficiaryName"=> $beneficiaryName,
-            "channel"=> "NET",
-            "creditAccount"=> $creditAccountNumber,
-            "debitAccount"=> $debitAccountNumber,
-            "deviceIp"=> $deviceIp,
-            "entrySource"=> "C",
-            "secPin"=> null,
-            "transactionDetails"=> $narration,
-            "transferCurrency"=> $currency
+            "amount" => $amount,
+            "authToken" => $authToken,
+            "bankName" => $bankName,
+            "beneficiaryAddress" => $beneficiaryAddress,
+            "beneficiaryName" => $beneficiaryName,
+            "channel" => "NET",
+            "creditAccount" => $creditAccountNumber,
+            "debitAccount" => $debitAccountNumber,
+            "deviceIp" => $deviceIp,
+            "entrySource" => "C",
+            "secPin" => null,
+            "transactionDetails" => $narration,
+            "transferCurrency" => $currency
         ];
 
         // return $data;
 
         $headers = [
-            "x-api-key"=> "123",
-            "x-api-secret"=> "123",
-            "x-api-source"=> "123",
-            "x-api-token"=> "123"
+            "x-api-key" => "123",
+            "x-api-secret" => "123",
+            "x-api-source" => "123",
+            "x-api-token" => "123"
         ];
 
         // return response()->json($data, 200);
@@ -339,30 +416,29 @@ class ApiGeneralCalls extends Model
 
 
 
-            if ($result->responseCode == '000' || $result->responseCode == '200') {
+        if ($result->responseCode == '000' || $result->responseCode == '200') {
 
-                $approve_req = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $check_mandate, 'request_status' => 'A', 'waitinglist' => 'approved', 'comment_1' => $comment, 'DOCUMENTREF' => $documentRef, 'comment_1_by' => $comment_by, 'res_message' => $result->message, 'res_date' => $res_date, 'approvers' => $approvers]);
+            $approve_req = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $check_mandate, 'request_status' => 'A', 'waitinglist' => 'approved', 'comment_1' => $comment, 'DOCUMENTREF' => $documentRef, 'comment_1_by' => $comment_by, 'res_message' => $result->message, 'res_date' => $res_date, 'approvers' => $approvers]);
 
-                $request = $user_alias . ' => ' . 'After approval received this response: => ' . $result->message;
+            $request = $user_alias . ' => ' . 'After approval received this response: => ' . $result->message;
 
-                $this->request_logs($request, $request_type_check, $result->message, $postedBy);
+            $this->request_logs($request, $request_type_check, $result->message, $postedBy);
 
 
-                return [
-                    'responseCode' =>  '000',
-                    'status' => 'approved',
-                    'message' =>  $result->message,
-                    'data' => null
-                ];
-            } else {
-                return [
-                    'responseCode' =>  '666',
-                    'status' => 'did not work',
-                    'message' =>  $result->message,
-                    'data' => null
-                ];
-            }
-
+            return [
+                'responseCode' =>  '000',
+                'status' => 'approved',
+                'message' =>  $result->message,
+                'data' => null
+            ];
+        } else {
+            return [
+                'responseCode' =>  '666',
+                'status' => 'did not work',
+                'message' =>  $result->message,
+                'data' => null
+            ];
+        }
     }
 
 
@@ -436,13 +512,13 @@ class ApiGeneralCalls extends Model
     {
         //$batch_no = Session::get('batch_no');
 
-        if(is_null($approvedBy)){
+        if (is_null($approvedBy)) {
             $approvers = $postedBy;
-        }else{
+        } else {
             $approvers = $approvedBy . ',' . $postedBy;
         }
 
-        $creditAccounts = DB::table('tb_corp_bank_import_excel')->where([  'batch_no' => $batch_no])->get();
+        $creditAccounts = DB::table('tb_corp_bank_import_excel')->where(['batch_no' => $batch_no])->get();
 
         // return $creditAccounts;
 
@@ -491,9 +567,9 @@ class ApiGeneralCalls extends Model
             'unit' => null,
             "debitAccount" => $debitAccountData,
             'creditAccounts' => $creditAccountData
-            
+
         ];
-        
+
         //    return $data;
 
         $user_alias = $postedBy;
@@ -504,39 +580,39 @@ class ApiGeneralCalls extends Model
         // return env('API_BASE_URL') . "transfers/sameBankBulkUpload";
 
         $response = Http::post(env('API_BASE_URL') . "transfers/sameBankBulkUpload", $data);
-        
-    // return $response;
+
+        // return $response;
         $result_i = new ApiBaseResponse();
         $result = (object) $result_i->api_response($response);
 
         // return $result_i->api_response($response);
 
-            $res_date = Carbon::now();
-            $res_date = $res_date->toDateTimeString();
+        $res_date = Carbon::now();
+        $res_date = $res_date->toDateTimeString();
 
-            if ($result->responseCode == '000' || $result->responseCode == '200') {
+        if ($result->responseCode == '000' || $result->responseCode == '200') {
 
-                $approve_req = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $check_mandate, 'request_status' => 'A', 'waitinglist' => 'approved', 'comment_1' => $comment, 'DOCUMENTREF' => $documentRef, 'comment_1_by' => $comment_by, 'res_message' => $result->message, 'res_date' => $res_date, 'approvers' => $approvers]);
+            $approve_req = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $check_mandate, 'request_status' => 'A', 'waitinglist' => 'approved', 'comment_1' => $comment, 'DOCUMENTREF' => $documentRef, 'comment_1_by' => $comment_by, 'res_message' => $result->message, 'res_date' => $res_date, 'approvers' => $approvers]);
 
-                $request = $user_alias . ' => ' . 'After approval received this response: => ' . $result->message;
+            $request = $user_alias . ' => ' . 'After approval received this response: => ' . $result->message;
 
-                $this->request_logs($request, $request_type_check, $result->message, $approvedBy);
+            $this->request_logs($request, $request_type_check, $result->message, $approvedBy);
 
 
-                return [
-                    'responseCode' =>  '000',
-                    'status' => 'approved',
-                    'message' =>  $result->message,
-                    'data' => null
-                ];
-            } else {
-                return [
-                    'responseCode' =>  '666',
-                    'status' => 'did not work',
-                    'message' =>  $result->message,
-                    'data' => null
-                ];
-            }
+            return [
+                'responseCode' =>  '000',
+                'status' => 'approved',
+                'message' =>  $result->message,
+                'data' => null
+            ];
+        } else {
+            return [
+                'responseCode' =>  '666',
+                'status' => 'did not work',
+                'message' =>  $result->message,
+                'data' => null
+            ];
+        }
 
 
         $curl = curl_init();
