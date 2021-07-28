@@ -44,9 +44,11 @@ class RequestApprovalController extends Controller
         $authToken = $request->authToken;
 
         $request_query = DB::table('tb_corp_bank_req')
-                        ->where('customer_no', $customer_no)
-                        ->where('request_id', $request_id)
-                        ->first();
+            ->where('customer_no', $customer_no)
+            ->where('request_id', $request_id)
+            ->first();
+
+        // return $request_query;
 
         if (is_null($request_query)) {
             return response()->json([
@@ -170,7 +172,7 @@ class RequestApprovalController extends Controller
 
 
 
-        if(strpos(strtoupper(trim($approvers)), strtoupper(trim($user_id))) !== false){
+        if (strpos(strtoupper(trim($approvers)), strtoupper(trim($user_id))) !== false) {
             return response()->json([
                 'responseCode' =>  '422',
                 'status' => 'NOT_ALLOWED',
@@ -194,7 +196,7 @@ class RequestApprovalController extends Controller
 
 
 
-        $result = $approve_func->approved_req($request_type_check, $request_id, $user_panel, $account_mandate, $check_mandate, $comment, $comment_by,$user_id, $approvers);
+        $result = $approve_func->approved_req($request_type_check, $request_id, $user_panel, $account_mandate, $check_mandate, $comment, $comment_by, $user_id, $approvers);
 
 
 
@@ -248,16 +250,16 @@ class RequestApprovalController extends Controller
                     return $req_result;
                     break;
 
-            case "RTGS":
-                // return 'ACH';
+                case "RTGS":
+                    // return 'ACH';
 
-                $req_result = $api_request->call_rtgs_transfer($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $bankCode, $bankName, $amount, $narration, $documentRef, $postedBy, $approvedBy, $beneficiaryName, $beneficiaryAddress, $ex1, $ex2, $ex3, $deviceIp, $currency, $authToken, $approvers);
+                    $req_result = $api_request->call_rtgs_transfer($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $bankCode, $bankName, $amount, $narration, $documentRef, $postedBy, $approvedBy, $beneficiaryName, $beneficiaryAddress, $ex1, $ex2, $ex3, $deviceIp, $currency, $authToken, $approvers);
 
-                //$req_result = $api_request->call_other_bank_transfer($request_id, $request_type_check, $result['check_mandate'], $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $bankCode, $amount, $narration, $documentRef, $postedBy, $approvedBy, $beneficiaryName, $beneficiaryAddress, $ex1, $ex2, $ex3);
+                    //$req_result = $api_request->call_other_bank_transfer($request_id, $request_type_check, $result['check_mandate'], $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $bankCode, $amount, $narration, $documentRef, $postedBy, $approvedBy, $beneficiaryName, $beneficiaryAddress, $ex1, $ex2, $ex3);
 
-                // $req_result = $api_request->statement_req($request_id, $request_type_check, $result['check_mandate'], $comment, $comment_by, $account_no, $start_date, $end_date, $type, $user_alias);
-                return $req_result;
-                break;
+                    // $req_result = $api_request->statement_req($request_id, $request_type_check, $result['check_mandate'], $comment, $comment_by, $account_no, $start_date, $end_date, $type, $user_alias);
+                    return $req_result;
+                    break;
                     // STATEMENT REQUEST
                 case "STR":
                     // return 'STR -> ' . $result['check_mandate'];
@@ -347,10 +349,6 @@ class RequestApprovalController extends Controller
                     echo "Request not found";
             }
         }
-
-
-
-
     }
 
     public function reject_request_by_approver(Request $request)
@@ -367,43 +365,39 @@ class RequestApprovalController extends Controller
         $narration = $request->narration;
 
         $request_query = DB::table('tb_corp_bank_req')
-        ->where('customer_no', $customer_no)
-        ->where('request_id', $request_id)
-        ->first();
-
-        if(!is_null($request_query)){
-            
-            $update_request = DB::table('tb_corp_bank_req')
             ->where('customer_no', $customer_no)
             ->where('request_id', $request_id)
-            ->update([
-                'request_status' => 'R',
-                'narration' => $narration
-            ]);
+            ->first();
 
-            if($update_request){
+        if (!is_null($request_query)) {
+
+            $update_request = DB::table('tb_corp_bank_req')
+                ->where('customer_no', $customer_no)
+                ->where('request_id', $request_id)
+                ->update([
+                    'request_status' => 'R',
+                    'narration' => $narration
+                ]);
+
+            if ($update_request) {
                 return response()->json([
-                'responseCode' => '000',
-                'message' => 'This request has been reject successfully',
-                'data' => NULL
+                    'responseCode' => '000',
+                    'message' => 'This request has been reject successfully',
+                    'data' => NULL
                 ], 200);
-            }else{
+            } else {
                 return response()->json([
-                'responseCode' => '600',
-                'message' => $request_id,
-                'data' => $request_query
+                    'responseCode' => '600',
+                    'message' => $request_id,
+                    'data' => $request_query
                 ], 200);
             }
-
-        }else{
+        } else {
             return response()->json([
                 'responseCode' => '688',
                 'message' => 'Request does not exist',
                 'data' => NULL
-                ], 200);
+            ], 200);
         }
-
-
-      
     }
 }

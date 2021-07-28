@@ -110,22 +110,22 @@ class BulkTransferController extends Controller
 
 
         DB::table('tb_corp_bank_import_excel')
-        ->insert([
-            'bban' => $bban,
-            'name' => $name,
-            'total_amount' => $total_amount,
-            'amount' => $amount,
-            'trans_desc' => $trans_desc,
-            'user_id' => $user_id,
-            'customer_no' => $customer_no,
-            'account_no' => $account_no,
-            'ref_no' => $ref_no,
-            'batch_no' => $batch_no,
-            'status' => 'P',
-            'bank_code' => 'SAB',
-            'created_at' => NOW(),
-            'updated_at' => NOW(),
-        ]);
+            ->insert([
+                'bban' => $bban,
+                'name' => $name,
+                'total_amount' => $total_amount,
+                'amount' => $amount,
+                'trans_desc' => $trans_desc,
+                'user_id' => $user_id,
+                'customer_no' => $customer_no,
+                'account_no' => $account_no,
+                'ref_no' => $ref_no,
+                'batch_no' => $batch_no,
+                'status' => 'P',
+                'bank_code' => 'SAB',
+                'created_at' => NOW(),
+                'updated_at' => NOW(),
+            ]);
 
         DB::commit();
         // return 'HI';
@@ -143,22 +143,22 @@ class BulkTransferController extends Controller
 
 
         DB::table('tb_corp_bank_req')
-        ->insert([
-            'request_type' => 'BULK',
-            'request_status' => 'P',
-            'postedby' => $user_id,
-            'user_id' => $user_id,
-            // 'user_name' => $username,
-            'customer_no' => $customer_no,
-            'account_no' => $account_no,
-            'account_mandate' => $account_mandate,
-            'documentref' => $document_ref,
-            'batch' => $batch_no,
-            'ref_no' => $ref_no,
-            'total_amount' => $total_amount,
-            'currency' => $currency,
-            'narration' => 'Bulk transfer',
-        ]);
+            ->insert([
+                'request_type' => 'BULK',
+                'request_status' => 'P',
+                'postedby' => $user_id,
+                'user_id' => $user_id,
+                // 'user_name' => $username,
+                'customer_no' => $customer_no,
+                'account_no' => $account_no,
+                'account_mandate' => $account_mandate,
+                'documentref' => $document_ref,
+                'batch' => $batch_no,
+                'ref_no' => $ref_no,
+                'total_amount' => $total_amount,
+                'currency' => $currency,
+                'narration' => 'Bulk transfer',
+            ]);
 
 
 
@@ -166,15 +166,15 @@ class BulkTransferController extends Controller
         $bulk_info = (object) $bolt;
 
         DB::table('TB_CORP_BANK_BULK_REF')
-                ->insert([
-                        'ref_no' => $bulk_info->REF_NO,
-                        'description' => $bulk_info->TRANS_DESC,
-                        'user_id' => $bulk_info->USER_ID,
-                        'total_amount' =>$bulk_info->TOTAL_AMOUNT,
-                        'batch_no' => $bulk_info->BATCH_NO,
-                        'account_no' => $bulk_info->ACCOUNT_NO,
-                        'account_mandate' => $bulk_info->ACCOUNT_MANDATE,
-                    ]);
+            ->insert([
+                'ref_no' => $bulk_info->REF_NO,
+                'description' => $bulk_info->TRANS_DESC,
+                'user_id' => $bulk_info->USER_ID,
+                'total_amount' => $bulk_info->TOTAL_AMOUNT,
+                'batch_no' => $bulk_info->BATCH_NO,
+                'account_no' => $bulk_info->ACCOUNT_NO,
+                'account_mandate' => $bulk_info->ACCOUNT_MANDATE,
+            ]);
 
 
         DB::commit();
@@ -187,8 +187,4 @@ class BulkTransferController extends Controller
         //     'data' => NULL
         // ], 200);
     }
-
-
-
-
 }
