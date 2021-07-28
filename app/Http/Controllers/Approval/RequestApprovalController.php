@@ -48,8 +48,6 @@ class RequestApprovalController extends Controller
             ->where('request_id', $request_id)
             ->first();
 
-        // return $request_query;
-
         if (is_null($request_query)) {
             return response()->json([
                 'responseCode' => '422',
@@ -272,7 +270,7 @@ class RequestApprovalController extends Controller
                 case "CHQR":
                     // return 'CHQR -> ' . $result['check_mandate'];
 
-                    $req_result = $api_request->cheque_book($request_id, $type,  $result['check_mandate'], $comment, $comment_by, $account_no, $branch_code, $leaflet, $user_alias);
+                    $req_result = $api_request->cheque_book($request_id, $type,  $result['check_mandate'], $comment, $comment_by, $account_no, $branch_code, $leaflet, $user_alias, $deviceIp, $authToken, $approvers);
                     return $req_result;
                     break;
 
