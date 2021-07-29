@@ -28,14 +28,14 @@ class RequestApprovalController extends Controller
         // return $request;
 
 
-        if ($validator->fails()) {
-            return response()->json([
-                'responseCode' => '422',
-                'message' => 'Error validation error',
-                'error' => $validator->errors(),
-                'data' => null
-            ], 200);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'responseCode' => '422',
+        //         'message' => 'Error validation error',
+        //         'error' => $validator->errors(),
+        //         'data' => null
+        //     ], 200);
+        // }
 
         $request_id = $request->request_id;
         $user_mandate = $request->user_mandate;
@@ -49,6 +49,12 @@ class RequestApprovalController extends Controller
             ->where('customer_no', $customer_no)
             ->where('request_id', $request_id)
             ->first();
+
+        // return response()->json([
+        //     'responseCode' => '422',
+        //     'message' => "Database Query",
+        //     'data' => $request_query
+        // ], 200);
 
         if (is_null($request_query)) {
             return response()->json([

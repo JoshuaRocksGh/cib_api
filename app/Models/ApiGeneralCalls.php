@@ -526,10 +526,12 @@ class ApiGeneralCalls extends Model
             $total_amt = $total_amt + (float) $creditAccount->amount;
 
             $creditAccountData[] = [
-                'creditAmount' => (float) $creditAccount->amount,
                 'creditAccount' => $creditAccount->bban,
+                'creditAmount' => (float) $creditAccount->amount,
+                'creditBranch' => null,
                 'creditCurrency' => null,
                 'creditNarration' => $creditAccount->trans_desc,
+                'creditProdref' => $batch_no
             ];
         }
 
@@ -541,13 +543,10 @@ class ApiGeneralCalls extends Model
         $debitAccountData[] = [
             "debitAccount" => $debitAccountNumber,
             "debitAmount" =>  $total_amt,
+            "debitBranch" =>  null,
             "debitCurrency" => $debitCurrency,
             "debitNarration" => $debitNarration,
-            "department" => null,
-            'referenceNo' => $batch_no,
-            'transType' => "INTB",
-            'postedBy' => $postedBy,
-            'unit' => null
+            "debitProdRef" => $batch_no,
 
         ];
         //  return $debitAccountData;
@@ -555,10 +554,7 @@ class ApiGeneralCalls extends Model
         $data = [
             'approvedBy' => $approvedBy,
             'channelCode' => $channelCode,
-            "bankType" => $bankcode,
-            "debitAmount" =>  $total_amt,
-            "debitCurrency" => $debitCurrency,
-            "debitNarration" => $debitNarration,
+            "branch" => null,
             "department" => null,
             'referenceNo' => $batch_no,
             'transType' => "INTB",
@@ -572,11 +568,11 @@ class ApiGeneralCalls extends Model
         // return response()->json([
         //     'responseCode' =>  '66',
         //     'status' => 'approved',
-        //     'message' =>  'dfghjk',
-        //     'data' => null
+        //     'message' =>  'api data',
+        //     'data' => $data
         // ], 200);
 
-        return $data;
+        // return $data;
 
         $user_alias = $postedBy;
 
@@ -589,19 +585,7 @@ class ApiGeneralCalls extends Model
 
         $response = Http::post(env('API_BASE_URL') . "transfers/sameBankBulkUpload", $data);
 
-<<<<<<< HEAD
-        return $response;
-=======
         // return $response;
-        // return [
-        //     'responseCode' =>  '666',
-        //     'status' => 'did not work',
-        //     'message' =>  "Joshua error",
-        //     'data' => $data,
-        //     'dat' => (env('API_BASE_URL') . "transfers/sameBankBulkUpload")
-        // ];
-
->>>>>>> 27c1b7c8d304ee74932c1065f031b817938ee579
         $result_i = new ApiBaseResponse();
         $result = (object) $result_i->api_response($response);
 
