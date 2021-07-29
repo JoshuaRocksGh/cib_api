@@ -14,6 +14,7 @@ class RequestApprovalController extends Controller
 {
     public function request_approval(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'user_mandate' => 'required',
             'user_id' => 'required',
@@ -199,6 +200,7 @@ class RequestApprovalController extends Controller
 
 
 
+
         // return $request_type_check;
 
         //  return response()->json([
@@ -211,6 +213,8 @@ class RequestApprovalController extends Controller
         if ($result['responseCode'] != '000') {
             return $result;
         } else {
+
+
 
 
             switch ($request_type_check) {
@@ -327,7 +331,7 @@ class RequestApprovalController extends Controller
 
                     break;
                 case "SLF":
-                    return 'SLF -> ' . $result['check_mandate'];
+                    // return 'SLF -> ' . $result['check_mandate'];
                     // $api_request = new ApiRequestFunction();
                     // return $req_result = $api_request->rtsg($request_id, $type,  $result['check_mandate'], $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $beneficiaryName, $beneficiaryAddress, $beneficiaryBankCode, $narration, $amount);
                     // return $req_result;
@@ -336,6 +340,7 @@ class RequestApprovalController extends Controller
                     // return 'BULK';
                     // return 'BULK -> ' . $result['check_mandate'];
                     // Session::put('batch_no', $batch_no);
+
 
 
                     return $req_result = $api_request->call_Bulk_($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $bankCode, $channelCode, $debitCurrency, $debitNarration, $batch_no, $postedBy, $approvedBy);

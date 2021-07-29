@@ -585,9 +585,23 @@ class ApiGeneralCalls extends Model
 
         // return env('API_BASE_URL') . "transfers/sameBankBulkUpload";
 
+
+
         $response = Http::post(env('API_BASE_URL') . "transfers/sameBankBulkUpload", $data);
 
+<<<<<<< HEAD
         return $response;
+=======
+        // return $response;
+        // return [
+        //     'responseCode' =>  '666',
+        //     'status' => 'did not work',
+        //     'message' =>  "Joshua error",
+        //     'data' => $data,
+        //     'dat' => (env('API_BASE_URL') . "transfers/sameBankBulkUpload")
+        // ];
+
+>>>>>>> 27c1b7c8d304ee74932c1065f031b817938ee579
         $result_i = new ApiBaseResponse();
         $result = (object) $result_i->api_response($response);
 
@@ -618,75 +632,6 @@ class ApiGeneralCalls extends Model
                 'message' =>  $result->message,
                 'data' => null
             ];
-        }
-
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => env('API_BASE_URL') . "transfers/sameBankBulkUpload",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "PUT",
-            CURLOPT_POSTFIELDS => $data,
-            CURLOPT_HTTPHEADER => array(
-                "x-api-key: " . env('X_API_KEY'),
-                "x-api-secret: " . env('X_API_SECRET'),
-                "Content-Type: application/json"
-            ),
-        ));
-
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-        curl_close($curl);
-
-        // return $response;
-
-
-        if ($err) {
-            return [
-                'message' => "cURL Error #:" . $err,
-                'responseCode' => '404',
-            ];
-        } else {
-
-            // $response = json_decode($response);
-            // return $response;
-
-            $result = json_decode($response);
-
-            $res_date = Carbon::now();
-            $res_date = $res_date->toDateTimeString();
-            //  return $result->responseCode;
-
-            if ($result->responseCode == '000' || $result->responseCode == '200') {
-
-                $approve_req = DB::table('tb_corp_bank_req')->where('request_id', $request_id)->update(['check_mandate' => $check_mandate, 'request_status' => 'A', 'waitinglist' => 'approved', 'comment_1' => $comment, 'DOCUMENTREF' => $documentRef, 'comment_1_by' => $comment_by, 'res_message' => $result->message, 'res_date' => $res_date]);
-
-                $request = $user_alias . ' => ' . 'After approval received this response: => ' . $result->message;
-
-                $this->request_logs($request, $request_type_check, $result->message, $postedBy);
-
-                $flag_status_A = DB::table('tb_corp_bank_import_excel')->where(['account_no' => $debitAccountNumber,  'batch_no' => $batch_no])->update(['status' => 'A']);
-
-                return [
-                    'responseCode' =>  '000',
-                    'status' => 'approved',
-                    'message' =>  $result->message,
-                    'data' => null
-                ];
-            } else {
-                return [
-                    'responseCode' =>  '666',
-                    'status' => 'did not work',
-                    'message' =>  $result->message,
-                    'data' => null
-                ];
-            }
         }
     }
 
