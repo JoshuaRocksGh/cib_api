@@ -533,7 +533,7 @@ class ApiGeneralCalls extends Model
             ];
         }
 
-        return $creditAccountData;
+        // return $creditAccountData;
 
         // return $total_amt;
 
@@ -569,7 +569,14 @@ class ApiGeneralCalls extends Model
 
         ];
 
-        //    return $data;
+        // return response()->json([
+        //     'responseCode' =>  '66',
+        //     'status' => 'approved',
+        //     'message' =>  'dfghjk',
+        //     'data' => null
+        // ], 200);
+
+        return $data;
 
         $user_alias = $postedBy;
 
@@ -580,7 +587,7 @@ class ApiGeneralCalls extends Model
 
         $response = Http::post(env('API_BASE_URL') . "transfers/sameBankBulkUpload", $data);
 
-        // return $response;
+        return $response;
         $result_i = new ApiBaseResponse();
         $result = (object) $result_i->api_response($response);
 

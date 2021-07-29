@@ -24,6 +24,9 @@ class RequestApprovalController extends Controller
             'authToken' => 'required',
         ]);
 
+        // return $request;
+
+
         if ($validator->fails()) {
             return response()->json([
                 'responseCode' => '422',
@@ -32,8 +35,6 @@ class RequestApprovalController extends Controller
                 'data' => null
             ], 200);
         }
-
-        // return $request;
 
         $request_id = $request->request_id;
         $user_mandate = $request->user_mandate;
