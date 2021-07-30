@@ -560,7 +560,7 @@ class ApiGeneralCalls extends Model
             'transType' => "INTB",
             'postedBy' => $postedBy,
             'unit' => null,
-            "debitAccount" => $debitAccountData,
+            "debitAccounts" => $debitAccountData,
             'creditAccounts' => $creditAccountData
 
         ];
