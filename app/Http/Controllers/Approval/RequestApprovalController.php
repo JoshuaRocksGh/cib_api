@@ -14,6 +14,7 @@ class RequestApprovalController extends Controller
 {
     public function request_approval(Request $request)
     {
+        // return $request;
 
         $validator = Validator::make($request->all(), [
             'user_mandate' => 'required',
@@ -25,7 +26,8 @@ class RequestApprovalController extends Controller
             'authToken' => 'required',
         ]);
 
-        // return $request;
+
+
 
 
         // if ($validator->fails()) {
@@ -44,6 +46,8 @@ class RequestApprovalController extends Controller
         $customer_no = $request->customer_no;
         $deviceIp = $request->deviceIp;
         $authToken = $request->authToken;
+
+        // return $request_id;
 
         $request_query = DB::table('tb_corp_bank_req')
             ->where('customer_no', $customer_no)
@@ -79,6 +83,7 @@ class RequestApprovalController extends Controller
                 'data' => null
             ], 200);
         }
+
         // return response()->json([
         //     'data' => $request_query
         // ]);
@@ -216,6 +221,10 @@ class RequestApprovalController extends Controller
         # CALL EXTERNAL API
         $api_request = new ApiGeneralCalls();
 
+        // return response()->json([
+        //     'data' => $api_request
+        // ]);
+
         if ($result['responseCode'] != '000') {
             return $result;
         } else {
@@ -342,17 +351,24 @@ class RequestApprovalController extends Controller
                     // return $req_result = $api_request->rtsg($request_id, $type,  $result['check_mandate'], $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $beneficiaryName, $beneficiaryAddress, $beneficiaryBankCode, $narration, $amount);
                     // return $req_result;
                     break;
-                case "BULK":
+                // case "BULK":
                     // return 'BULK';
                     // return 'BULK -> ' . $result['check_mandate'];
                     // Session::put('batch_no', $batch_no);
 
 
 
-                    return $req_result = $api_request->call_Bulk_($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $bankCode, $channelCode, $debitCurrency, $debitNarration, $batch_no, $postedBy, $approvedBy);
+                    // return $req_result = $api_request->call_Bulk_($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $bankCode, $channelCode, $debitCurrency, $debitNarration, $batch_no, $postedBy, $approvedBy);
 
                     // $req_result = $api_request->stop_cheque($result['check_mandate'], $account_no, $cheque_from_No, $cheque_to_No, $date_issued, $beneficiary_name, $amount );
                     // return $req_result;
+                    // break;
+                case "KORP":
+
+                    // return "KORP";
+
+                    return $req_result =  $api_request->call_single_korpor($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $bankCode, $bankName, $amount, $narration, $documentRef, $postedBy, $approvedBy, $beneficiaryName, $beneficiaryAddress, $ex1, $ex2, $ex3, $deviceIp, $currency, $authToken, $approvers, $transBy);
+                    return $req_result;
                     break;
 
                 default:

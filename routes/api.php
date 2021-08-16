@@ -41,7 +41,7 @@ Route::get('/get-bulk-korpor-upload-detail-list-api', [BulkKorporController::cla
 Route::get('/update-bulk-korpor-upload-detail-list-api', [BulkKorporController::class, 'update_bulk_korpor_upload_detail_list'])->name('update-bulk-korpor-upload-detail-list-api');
 
 // Send Single E-korpor
-Route::post('/send-korpor-gone for-pending', [KorporRequestController::class, 'send_korpor_request'])->name("send-korpor-gone for-pending");
+Route::post('/send-korpor-gone-for-pending', [KorporRequestController::class, 'send_korpor_request'])->name("send-korpor-gone-for-pending");
 
 
 // Transfer
