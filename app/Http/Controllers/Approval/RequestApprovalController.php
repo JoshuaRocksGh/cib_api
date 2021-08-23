@@ -63,7 +63,7 @@ class RequestApprovalController extends Controller
         if (is_null($request_query)) {
             return response()->json([
                 'responseCode' => '422',
-                'message' => "Customer ($customer_no) with request doest not exits",
+                'message' => "Customer ($customer_no) with request does not exit",
                 'data' => null
             ], 200);
         }
@@ -187,7 +187,7 @@ class RequestApprovalController extends Controller
             return response()->json([
                 'responseCode' =>  '422',
                 'status' => 'NOT_ALLOWED',
-                'message' =>  "User ($user_id) has already approve this request",
+                'message' =>  "User ($user_id) has already approved this request",
                 'data' => NULL
             ], 200);
         }
@@ -370,6 +370,8 @@ class RequestApprovalController extends Controller
                     return $req_result =  $api_request->call_single_korpor($request_id, $request_type_check, $check_mandate, $comment, $comment_by, $debitAccountNumber, $creditAccountNumber, $bankCode, $bankName, $amount, $narration, $documentRef, $postedBy, $approvedBy, $beneficiaryName, $beneficiaryAddress, $ex1, $ex2, $ex3, $deviceIp, $currency, $authToken, $approvers, $transBy);
                     return $req_result;
                     break;
+                case "KORP" :
+                    return "KORP" ;
 
                 default:
                     echo "Request not found";
