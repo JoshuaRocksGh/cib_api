@@ -59,7 +59,7 @@ class RequestApprovalController extends Controller
         if (is_null($request_query)) {
             return response()->json([
                 'responseCode' => '422',
-                'message' => "Customer ($customer_no) with request doest not exits",
+                'message' => "Customer ($customer_no) with request does not exit",
                 'data' => null
             ], 200);
         }
@@ -182,7 +182,7 @@ class RequestApprovalController extends Controller
             return response()->json([
                 'responseCode' =>  '422',
                 'status' => 'NOT_ALLOWED',
-                'message' =>  "User ($user_id) has already approve this request",
+                'message' =>  "User ($user_id) has already approved this request",
                 'data' => NULL
             ], 200);
         }
@@ -354,6 +354,8 @@ class RequestApprovalController extends Controller
                     // $req_result = $api_request->stop_cheque($result['check_mandate'], $account_no, $cheque_from_No, $cheque_to_No, $date_issued, $beneficiary_name, $amount );
                     // return $req_result;
                     break;
+                case "KORP" :
+                    return "KORP" ;
 
                 default:
                     echo "Request not found";
