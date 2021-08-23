@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Accounts\AccountController;
 use App\Http\Controllers\Approval\RequestApprovalController;
+use App\Http\Controllers\Approval\RequestRejectedController;
 use App\Http\Controllers\BULK\BulkKorporController;
 use App\Http\Controllers\BULK\BulkTransferController;
 use App\Http\Controllers\BULK\ImportExcelController;
@@ -69,3 +70,7 @@ Route::post('/chequebook-request', [ChequeBookRequestGoForPendingController::cla
 
 #CIB APPROVAL
 Route::post('/request-approval', [RequestApprovalController::class, 'request_approval'])->name('request-approval');
+
+#CIB REJECT
+Route::post('/reject-request-by-approver', [RequestApprovalController::class, 'reject_request_by_approver'])->name('reject-request-by-approver');
+
